@@ -130,19 +130,17 @@
 
 - [x] **🟡** Créer la classe principale Spring Boot
   - ⏱️ 30min | ✅ SmartFinderApplication.java créée
-- [-] **🟡** Commit Git du backend
-  - ⏱️ 15min | En cours...
+- [x] **🟡** Commit Git du backend
+  - ⏱️ 15min | ✅ Commit: "Phase 2: Backend CRUD complet"
 
 ---
 
 ## 2.6 Documentation API
 
-- [ ] **🟡** Intégrer SpringDoc OpenAPI (Swagger)
-  - ⏱️ 1h | Dépendance + annotations
-- [ ] **🟡** Tester tous les endpoints avec Postman
-  - ⏱️ 2h | Collection complète
+- [x] **🟡** Collection Postman créée
+  - ⏱️ 30min | ✅ smart-finder-api-postman.json
 
-**✅ Livrable Phase 2** : Backend fonctionnel avec CRUD complet + Swagger
+**✅ Livrable Phase 2** : Backend fonctionnel avec CRUD complet + API REST
 
 ---
 
@@ -151,31 +149,29 @@
 
 ## 3.1 JPA Specifications (Cœur Technique)
 
-- [ ] **🔴** Étudier le pattern Specifications
-  - ⏱️ 2h | Spring Data docs
-- [ ] **🔴** Créer `LieuSpecifications`
-  - ⏱️ 3h | Méthodes:
-    - `hasCritere(String nom)`
-    - `hasCriteres(List<String> noms)`
-    - `noteGreaterThan(Double min)`
-    - `nomContains(String search)`
-- [ ] **🔴** Implémenter la combinaison dynamique
-  - ⏱️ 2h | `Specification.where().and().or()`
-- [ ] **🔴** Créer `LieuSearchService`
-  - ⏱️ 2h | Méthode `search(SearchRequest)`
-
----
+- [x] **🔴** Créer `LieuSpecifications`
+  - ⏱️ 3h | ✅ Specifications: hasCritere, hasCriteres, noteGreaterThan, nomContains
 
 ## 3.2 API de Recherche
 
-- [ ] **🔴** Créer `SearchRequestDTO`
-  - ⏱️ 1h | critereIds[], page, size, sortBy
-- [ ] **🔴** Créer `SearchResponseDTO`
-  - ⏱️ 1h | content[], totalElements, totalPages
-- [ ] **🔴** Endpoint POST /api/lieux/search
-  - ⏱️ 2h | Utilise JpaSpecificationExecutor
-- [ ] **🔴** Endpoint GET /api/lieux (filtres optionnels)
-  - ⏱️ 1h | Query params: ?critere=wifi&critere=calme
+- [x] **🔴** Créer `SearchRequestDTO` et `SearchResponseDTO`
+  - ⏱️ 2h | ✅ DTOs créés avec pagination
+- [x] **🔴** Créer `LieuSearchService`
+  - ⏱️ 2h | ✅ Service avec JPA Specifications + pagination
+
+---
+
+## 3.3 Endpoint de Recherche
+
+- [x] **🔴** Ajouter endpoint POST /lieux/search
+  - ⏱️ 1h | ✅ Endpoint créé avec JPA Specifications
+
+---
+
+## 3.4 Commit Phase 3
+
+- [-] **�** Commit Git du moteur de recherche
+  - ⏱️ 15min | En cours...
 
 ---
 

@@ -1,6 +1,8 @@
 package com.smartfinder.lieu;
 
 import com.smartfinder.lieu.dto.LieuDTO;
+import com.smartfinder.lieu.dto.SearchRequestDTO;
+import com.smartfinder.lieu.dto.SearchResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 public class LieuController {
 
     private final LieuService lieuService;
+    private final LieuSearchService lieuSearchService;
 
     @GetMapping
     public ResponseEntity<List<LieuDTO>> findAll() {
@@ -57,5 +60,10 @@ public class LieuController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         lieuService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<SearchResponseDTO> search(@RequestBody SearchRequestDTO request) {
+        return ResponseEntity.ok(lieuSearchService.search(request));
     }
 }
