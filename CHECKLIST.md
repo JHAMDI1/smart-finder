@@ -193,6 +193,7 @@
 
 # PHASE 4 : FRONTEND ANGULAR
 ### 🗓️ Semaines 7-8 | ⏱️ ~40h
+[x] **🔴** Phase 4 terminée
 
 ## 4.1 Setup Angular
 
@@ -250,8 +251,8 @@
   - ⏱️ 1h | ✅ Service créé
 - [x] **🔴** `AvisService` - Soumission et récupération
   - ⏱️ 1h | ✅ Service créé
-- [ ] **🟡** Intercepteur HTTP (Bearer token)
-  - ⏱️ 1h | Ajout automatique JWT
+- [x] **🟡** Intercepteur HTTP (Bearer token)
+  - ⏱️ 1h | ✅ Ajout automatique JWT via auth.interceptor.ts
 
 ---
 
@@ -315,20 +316,20 @@
 
 ## 5.1 Backend - Spring Security
 
-- [ ] **🔴** Ajouter dépendances (Spring Security, JWT)
-  - ⏱️ 30min | pom.xml
-- [ ] **🔴** Créer `JwtUtil` (génération/validation)
-  - ⏱️ 2h | Secret key, expiration
-- [ ] **🔴** Créer `JwtAuthenticationFilter`
-  - ⏱️ 2h | Validation token sur chaque requête
-- [ ] **🔴** Configurer `SecurityConfig`
-  - ⏱️ 2h | CORS, public routes, secured routes
-- [ ] **🔴** Créer `AuthController`
-  - ⏱️ 2h | POST /api/auth/login, /api/auth/register
-- [ ] **🔴** Protéger POST/PUT/DELETE /api/criteres
-  - ⏱️ 1h | `@PreAuthorize("hasRole('ADMIN')")`
-- [ ] **🔴** Protéger les routes Propriétaire (CRUD lieux)
-  - ⏱️ 2h | Vérifier ownership
+- [x] **🔴** Ajouter dépendances (Spring Security, JWT)
+  - ⏱️ 30min | ✅ pom.xml
+- [x] **🔴** Créer `JwtUtil` (génération/validation)
+  - ⏱️ 2h | ✅ Secret key, expiration
+- [x] **🔴** Créer `JwtAuthenticationFilter`
+  - ⏱️ 2h | ✅ Validation token sur chaque requête
+- [x] **🔴** Configurer `SecurityConfig`
+  - ⏱️ 2h | ✅ CORS, public routes, secured routes
+- [x] **🔴** Créer `AuthController`
+  - ⏱️ 2h | ✅ POST /api/auth/login, /api/auth/register
+- [x] **🔴** Protéger POST/PUT/DELETE /api/criteres
+  - ⏱️ 1h | ✅ `@PreAuthorize("hasRole('ADMIN')")`
+- [x] **🔴** Protéger les routes Propriétaire (CRUD lieux)
+  - ⏱️ 2h | ✅ Vérifier ownership
 
 ## 5.3 CORS Configuration (CRITIQUE)
 
@@ -356,8 +357,8 @@
   - ⏱️ 1h | ✅ authGuard + publicGuard créés
 - [ ] **🔴** Créer `RoleGuard`
   - ⏱️ 1h | Vérification rôle pour routes admin
-- [ ] **🔴** Intercepteur HTTP (ajout Bearer token)
-  - ⏱️ 1h | Header Authorization
+- [x] **🔴** Intercepteur HTTP (ajout Bearer token)
+  - ⏱️ 1h | ✅ Header Authorization via auth.interceptor.ts
 - [ ] **🟡** Gestion expiration token
   - ⏱️ 1h | Logout automatique
 

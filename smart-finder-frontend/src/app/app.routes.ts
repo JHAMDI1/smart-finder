@@ -26,6 +26,10 @@ export const routes: Routes = [
     loadComponent: () => import('./lieu/components/lieu-detail/lieu-detail.component').then(m => m.LieuDetailComponent)
   },
   { 
+    path: 'smart-search', 
+    loadComponent: () => import('./smart-search/components/smart-search/smart-search.component').then(m => m.SmartSearchComponent)
+  },
+  { 
     path: '**', 
     redirectTo: '/lieux' 
   }
