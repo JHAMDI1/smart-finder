@@ -186,19 +186,20 @@
 
 ## 3.4 Commit Phase 3 - Optimisation
 
-- [-] **🟡** Commit Git optimisation BDD
-  - ⏱️ 15min | En cours...
+- [x] **🟡** Commit Git optimisation BDD
+  - ⏱️ 15min | ✅ Commit: "Phase 3: Optimisation BDD - Index MySQL + Migrations Flyway"
 
 ---
 
-## 3.4 Algorithme de Ranking
+# PHASE 4 : FRONTEND ANGULAR
+### 🗓️ Semaines 7-8 | ⏱️ ~40h
 
-- [ ] **🔴** Implémenter le calcul de pertinence
-  - ⏱️ 3h | Nombre de critères correspondants
-- [ ] **🔴** Implémenter le tri multi-critères
-  - ⏱️ 2h | 1. Pertinence 2. Note 3. Nb avis 4. Date
-- [ ] **🔴** Afficher le score de pertinence dans la réponse
-  - ⏱️ 1h | Champ "matchCount" dans DTO
+## 4.1 Setup Angular
+
+- [x] **🔴** Générer le projet Angular
+  - ⏱️ 30min | ✅ Projet généré avec ng new (routing + scss)
+- [-] **🔴** Installer Tailwind CSS
+  - ⏱️ 15min | En cours... DTO
 
 ---
 
@@ -220,34 +221,15 @@
 # PHASE 4 : FRONTEND ANGULAR
 ### 🗓️ Semaines 7-8 | ⏱️ ~40h
 
-## 4.1 Setup Angular
-
-- [ ] **🔴** Générer le projet Angular
-  - ⏱️ 30min | `ng new smart-finder-frontend --routing --style=scss`
-- [ ] **🔴** Configurer Tailwind CSS
-  - ⏱️ 30min | Installation + config
-- [ ] **🔴** Créer la structure des dossiers
-  ```
-  src/app/
-  ├── components/
-  ├── services/
-  ├── models/
-  ├── guards/
-  ├── interceptors/
-  └── pages/
-  ```
-- [ ] **🔴** Configurer les environnements
-  - ⏱️ 30min | `environment.ts` avec URL API
-- [ ] **🔴** Configurer le routing
-  - ⏱️ 1h | Routes principales
-
 ---
 
 ## 4.2 Models TypeScript
 
-- [ ] **🔴** Interface `Utilisateur`
+- [x] **🔴** Créer la structure feature-based
+  - ⏱️ 1h | ✅ Structure créée avec models et services
+- [x] **🔴** Interface `Utilisateur`
   - ⏱️ 30min
-- [ ] **🔴** Interface `Lieu`
+- [x] **🔴** Interface `Lieu`
   - ⏱️ 30min | Avec criteres[] et noteMoyenne
 - [ ] **🔴** Interface `Critere`
   - ⏱️ 30min
