@@ -1,0 +1,28 @@
+# Configuration Render pour Smart Finder Backend
+
+# Build command
+buildCommand: ./mvnw clean package -DskipTests
+
+# Start command
+startCommand: java -jar target/smart-finder-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+
+# Environment variables
+envVars:
+  - key: MYSQL_URL
+    sync: false
+  - key: MYSQL_USER
+    sync: false
+  - key: MYSQL_PASSWORD
+    sync: false
+  - key: JWT_SECRET
+    generateValue: true
+  - key: OPENAI_API_KEY
+    sync: false
+  - key: CORS_ORIGINS
+    value: https://smart-finder-frontend.vercel.app
+
+# Disk (if needed for file uploads)
+disk:
+  name: tmp
+  mountPath: /tmp
+  sizeGB: 1
