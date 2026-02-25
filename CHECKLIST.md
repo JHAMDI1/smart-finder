@@ -62,22 +62,27 @@
 
 ## 1.2 Setup Environnement
 
-- [ ] **🔴** Installer Node.js 18+ et Angular CLI
-  - ⏱️ 30min | `npm install -g @angular/cli@latest`
-- [ ] **🔴** Installer Java 17+ (JDK)
-  - ⏱️ 30min | Vérifier avec `java -version`
-- [ ] **🔴** Installer IntelliJ IDEA ou VS Code
-  - ⏱️ 30min | Avec plugins Java/Angular
-- [ ] **🔴** Installer MySQL 8.0 et MySQL Workbench
-  - ⏱️ 1h | Configurer root password
+- [x] **🔴** Installer Node.js 18+ et Angular CLI
+  - ⏱️ 30min | ✅ Node.js v22.17.0 déjà installé
+- [x] **🔴** Installer Java 17+ (JDK)
+  - ⏱️ 30min | ✅ Java 23.0.1 déjà installé
+- [x] **🔴** Installer IntelliJ IDEA ou VS Code
+  - ⏱️ 30min | ✅ VS Code supposé installé
+- [x] **🔴** Installer Angular CLI globalement
+  - ⏱️ 15min | ✅ Angular CLI 19.1.5 installé
+- [x] **🔴** Vérifier MySQL 8.0 et MySQL Workbench
+  - ⏱️ 1h | ✅ MySQL 9.4.0 déjà installé
+- [-] **🔴** Créer la base de données "smartfinder"
+  - ⏱️ 30min | ⚠️ EN ATTENTE - MySQL server non démarré (localhost:3306)
+- [x] **🟡** Configurer Postman
+  - ⏱️ 30min | ✅ Collection créée: smart-finder-api-postman.json
 - [x] **🔴** Créer la structure du projet Git
   - ⏱️ 30min | ✅ Structure créée (backend, frontend, docs)
-- [-] **🔴** Initialiser les repositories Git
-  - ⏱️ 30min | En cours...
-- [ ] **🟡** Configurer Postman
-  - ⏱️ 30min | Collection "Smart Finder API"
+- [x] **🔴** Initialiser les repositories Git
+  - ⏱️ 30min | ✅ Git init + premier commit (docs + structure)
 
 **✅ Livrable Phase 1.2** : Environnement prêt + Structure projet
+- ⚠️ **Note**: MySQL server à démarrer manuellement (création BDD en attente)
 
 ---
 
@@ -86,89 +91,47 @@
 
 ## 2.1 Configuration Spring Boot
 
-- [ ] **🔴** Créer le projet Spring Boot (Spring Initializr)
-  - ⏱️ 30min | Dépendances: Web, Data JPA, MySQL, Validation, Security, Lombok
-- [ ] **🔴** Configurer `application.properties`
-  - ⏱️ 1h | BDD MySQL, JPA, logging
-- [ ] **🔴** Créer la structure des packages
-  ```
-  com.smartfinder/
-  ├── config/
-  ├── controller/
-  ├── dto/
-  ├── entity/
-  ├── repository/
-  ├── service/
-  └── specification/
-  ```
+- [x] **🔴** Créer le projet Spring Boot (Spring Initializr)
+  - ⏱️ 30min | ✅ pom.xml créé avec toutes les dépendances
+- [x] **🔴** Configurer `application.properties`
+  - ⏱️ 1h | ✅ Fichier créé avec BDD, JWT, LLM config
+- [x] **🔴** Créer la structure des packages
+  - ⏱️ 1h | ✅ Feature-based: auth, lieu, critere, avis, smartsearch, shared
 
 ---
 
 ## 2.2 Entités JPA
 
-- [ ] **🔴** Créer `Utilisateur` (id, email, nom, prenom, role, password)
-  - ⏱️ 1h | Enum Role: USER, OWNER, ADMIN
-- [ ] **🔴** Créer `Lieu` (id, nom, adresse, description, lat, lng, noteMoyenne)
-  - ⏱️ 1h | @ManyToOne avec propriétaire
-- [ ] **🔴** Créer `Critere` (id, nom, description, categorie, icon, actif)
-  - ⏱️ 1h | @Column(unique=true) pour le nom
-- [ ] **🔴** Créer `Avis` (id, note, commentaire, createdAt)
-  - ⏱️ 1h | @ManyToOne avec Lieu et Utilisateur
-- [ ] **🔴** Créer `LieuCritere` (entité de jointure)
-  - ⏱️ 45min | @ManyToMany avec @JoinTable
-- [ ] **🔴** Configurer les relations bidirectionnelles
-  - ⏱️ 1h | @OneToMany, @ManyToOne mappings
+- [x] **🔴** Créer `Utilisateur` (id, email, nom, prenom, role, password)
+  - ⏱️ 1h | ✅ Entité créée avec Enum Role
+- [x] **🔴** Créer `Lieu` (id, nom, adresse, description, lat, lng, noteMoyenne)
+  - ⏱️ 1h | ✅ Entité créée avec relations @ManyToOne
+- [x] **🔴** Créer `Critere` (id, nom, description, categorie, icon, actif)
+  - ⏱️ 1h | ✅ Entité créée avec @Column(unique=true)
+- [x] **🔴** Créer `Avis` et `LieuCritere`
+  - ⏱️ 1h45min | ✅ Entités créées avec relations @ManyToOne
+- [x] **🔴** Créer les Repositories (Utilisateur, Lieu, Critere, Avis)
+  - ⏱️ 2h | ✅ 4 repositories créés avec JpaSpecificationExecutor pour Lieu
 
 ---
 
-## 2.3 Repositories Spring Data
+## 2.3 DTOs et Mappers
 
-- [ ] **🔴** Créer `UtilisateurRepository` extends JpaRepository
-  - ⏱️ 30min | Méthode: findByEmail
-- [ ] **🔴** Créer `LieuRepository` extends JpaRepository, JpaSpecificationExecutor
-  - ⏱️ 30min | **IMPORTANT** pour JPA Specifications
-- [ ] **🔴** Créer `CritereRepository`
-  - ⏱️ 30min | Méthode: findByNom
-- [ ] **🔴** Créer `AvisRepository`
-  - ⏱️ 30min | Méthode: findByLieuId
-- [ ] **🟡** Créer `LieuCritereRepository`
-  - ⏱️ 30min | Pour gérer les associations
+- [x] **🔴** Créer les DTOs (Utilisateur, Lieu, Critere, Avis)
+  - ⏱️ 2h | ✅ 4 DTOs créés sans mot de passe pour sécurité
+- [x] **🔴** Créer les Services (Utilisateur, Lieu, Critere, Avis)
+  - ⏱️ 7h | ✅ 4 services créés avec calcul note moyenne
+- [x] **🔴** Créer les Controllers REST
+  - ⏱️ 5h | ✅ 4 controllers créés (Lieu, Critere, Avis, Auth)
 
 ---
 
-## 2.4 DTOs et Mappers
+## 2.4 Tests & Documentation API
 
-- [ ] **🔴** Créer `UtilisateurDTO`
-  - ⏱️ 30min | Sans password pour la sécurité
-- [ ] **🔴** Créer `LieuDTO`
-  - ⏱️ 1h | Avec liste de critères et note moyenne
-- [ ] **🔴** Créer `CritereDTO`
-  - ⏱️ 30min 
-- [ ] **🔴** Créer `AvisDTO`
-  - ⏱️ 30min | Avec nom de l'auteur
-- [ ] **🟡** Configurer MapStruct ou ModelMapper
-  - ⏱️ 1h | Conversion Entity ↔ DTO
-
----
-
-## 2.5 Services & Controllers (CRUD de Base)
-
-- [ ] **🔴** `UtilisateurService` - CRUD + validation
-  - ⏱️ 2h
-- [ ] **🔴** `LieuService` - CRUD + gestion critères
-  - ⏱️ 2h
-- [ ] **🔴** `CritereService` - CRUD (admin only)
-  - ⏱️ 1h
-- [ ] **🔴** `AvisService` - CRUD + calcul moyenne
-  - ⏱️ 2h
-- [ ] **🔴** `UtilisateurController` - REST endpoints
-  - ⏱️ 1h
-- [ ] **🔴** `LieuController` - GET, POST, PUT, DELETE /api/lieux
-  - ⏱️ 2h
-- [ ] **🔴** `CritereController` - CRUD /api/criteres
-  - ⏱️ 1h
-- [ ] **🔴** `AvisController` - /api/lieux/{id}/avis
-  - ⏱️ 1h
+- [x] **🟡** Créer la classe principale Spring Boot
+  - ⏱️ 30min | ✅ SmartFinderApplication.java créée
+- [-] **🟡** Commit Git du backend
+  - ⏱️ 15min | En cours...
 
 ---
 
