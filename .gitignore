@@ -1,0 +1,39 @@
+# Backend
+smart-finder-backend/target/
+smart-finder-backend/.idea/
+smart-finder-backend/*.iml
+smart-finder-backend/.classpath
+smart-finder-backend/.project
+smart-finder-backend/.settings/
+
+# Frontend
+smart-finder-frontend/node_modules/
+smart-finder-frontend/dist/
+smart-finder-frontend/.angular/
+smart-finder-frontend/.idea/
+smart-finder-frontend/*.iml
+
+# Environment
+.env
+.env.local
+.env.*.local
+application-local.properties
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Documentation build
+docs/_build/
