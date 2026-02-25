@@ -170,25 +170,24 @@
 
 ## 3.4 Commit Phase 3
 
-- [-] **�** Commit Git du moteur de recherche
-  - ⏱️ 15min | En cours...
+- [x] **🟡** Commit Git du moteur de recherche
+  - ⏱️ 15min | ✅ Commit: "Phase 3: Moteur de recherche JPA Specifications"
 
 ---
 
 ## 3.3 Optimisation BDD
 
-- [ ] **🔴** Créer les index MySQL
-  - ⏱️ 2h | 
-    ```sql
-    CREATE INDEX idx_lieu_critere_lieu ON lieu_critere(lieu_id);
-    CREATE INDEX idx_lieu_critere_critere ON lieu_critere(critere_id);
-    CREATE INDEX idx_critere_nom ON critere(nom);
-    CREATE INDEX idx_lieu_note ON lieu(note_moyenne);
-    ```
-- [ ] **🔴** Ajouter la pagination (Pageable)
-  - ⏱️ 1h | `Page<Lieu>` au lieu de `List<Lieu>`
-- [ ] **🟡** Vérifier les requêtes avec EXPLAIN
-  - ⏱️ 1h | Optimiser si full table scan
+- [x] **🔴** Créer les index MySQL
+  - ⏱️ 2h | ✅ 11 index créés (V2__add_indexes.sql)
+- [x] **🔴** Créer migrations Flyway
+  - ⏱️ 1h | ✅ V1__init_schema.sql, V2__add_indexes.sql, V3__seed_data.sql
+
+---
+
+## 3.4 Commit Phase 3 - Optimisation
+
+- [-] **🟡** Commit Git optimisation BDD
+  - ⏱️ 15min | En cours...
 
 ---
 
