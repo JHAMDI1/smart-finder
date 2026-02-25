@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LieuService } from '../services/lieu.service';
-import { Lieu, SearchRequest } from '../models/lieu.model';
+import { LieuService } from '../../services/lieu.service';
+import { Lieu, SearchRequest, SearchResponse } from '../../models/lieu.model';
 
 @Component({
   selector: 'app-lieu-list',
@@ -133,11 +133,11 @@ export class LieuListComponent implements OnInit {
     };
 
     this.lieuService.search(request).subscribe({
-      next: (response) => {
+      next: (response: SearchResponse) => {
         this.lieux = response.content;
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Error loading lieux:', err);
         this.loading = false;
       }
