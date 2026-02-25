@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +32,11 @@ public class UtilisateurService {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         return mapToDTO(utilisateur);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Utilisateur> findByEmailForAuth(String email) {
+        return utilisateurRepository.findByEmail(email);
     }
 
     @Transactional(readOnly = true)

@@ -198,8 +198,8 @@
 
 - [x] **🔴** Générer le projet Angular
   - ⏱️ 30min | ✅ Projet généré avec ng new (routing + scss)
-- [-] **🔴** Installer Tailwind CSS
-  - ⏱️ 15min | En cours... DTO
+- [x] **🔴** Installer Tailwind CSS
+  - ⏱️ 15min | ✅ Tailwind configuré avec custom colors
 
 ---
 
@@ -231,25 +231,25 @@
   - ⏱️ 30min
 - [x] **🔴** Interface `Lieu`
   - ⏱️ 30min | Avec criteres[] et noteMoyenne
-- [ ] **🔴** Interface `Critere`
-  - ⏱️ 30min
-- [ ] **🔴** Interface `Avis`
-  - ⏱️ 30min
-- [ ] **🔴** Interface `SearchRequest` / `SearchResponse`
-  - ⏱️ 1h | Pour le moteur de recherche
+- [x] **🔴** Interface `Critere`
+  - ⏱️ 30min | ✅ Interface créée avec icône et categorie
+- [x] **🔴** Interface `Avis`
+  - ⏱️ 30min | ✅ Interface créée avec note et commentaire
+- [x] **🔴** Interface `SearchRequest` / `SearchResponse`
+  - ⏱️ 1h | ✅ Interfaces créées pour moteur de recherche
 
 ---
 
 ## 4.3 Services HTTP
 
-- [ ] **🔴** `AuthService` - Login, register, JWT storage
-  - ⏱️ 2h
-- [ ] **🔴** `LieuService` - CRUD + search
-  - ⏱️ 2h
-- [ ] **🔴** `CritereService` - Récupération des critères
-  - ⏱️ 1h
-- [ ] **🔴** `AvisService` - Soumission et récupération
-  - ⏱️ 1h
+- [x] **🔴** `AuthService` - Login, register, JWT storage
+  - ⏱️ 2h | ✅ Service créé avec localStorage
+- [x] **🔴** `LieuService` - CRUD + search
+  - ⏱️ 2h | ✅ Service créé avec pagination
+- [x] **🔴** `CritereService` - Récupération des critères
+  - ⏱️ 1h | ✅ Service créé
+- [x] **🔴** `AvisService` - Soumission et récupération
+  - ⏱️ 1h | ✅ Service créé
 - [ ] **🟡** Intercepteur HTTP (Bearer token)
   - ⏱️ 1h | Ajout automatique JWT
 
@@ -258,32 +258,32 @@
 ## 4.4 Composants UI (Mobile-First)
 
 ### Layout
-- [ ] **🔴** `HeaderComponent` - Navigation responsive
-  - ⏱️ 2h | Burger menu sur mobile
+- [x] **🔴** `NavbarComponent` - Navigation responsive
+  - ⏱️ 2h | ✅ Mobile bottom nav + Desktop top nav
 - [ ] **🔴** `FooterComponent`
   - ⏱️ 30min
 - [ ] **🔴** `HomeComponent` - Page d'accueil
   - ⏱️ 2h | Hero + CTA Recherche
 
 ### Authentification
-- [ ] **🔴** `LoginComponent` - Formulaire responsive
-  - ⏱️ 2h | Validation email/password
-- [ ] **🔴** `RegisterComponent`
-  - ⏱️ 2h | Choix rôle (User/Owner)
+- [x] **🔴** `LoginComponent` - Formulaire responsive
+  - ⏱️ 2h | ✅ Formulaire avec validation
+- [x] **🔴** `RegisterComponent`
+  - ⏱️ 2h | ✅ Formulaire avec choix rôle
 
 ### Recherche
 - [ ] **🔴** `FiltresComponent` - Checkboxes par catégorie
   - ⏱️ 4h | Groupes: Connectivité, Ambiance, Services...
-- [ ] **🔴** `ListeLieuxComponent` - Grille/Liste responsive
-  - ⏱️ 3h | Cards avec image, nom, note, tags
+- [x] **🔴** `LieuListComponent` - Grille/Liste responsive
+  - ⏱️ 3h | ✅ Cards avec filtres mobile-first
 - [ ] **🔴** `LieuCardComponent` - Carte individuelle
   - ⏱️ 2h | Mobile: full width, Desktop: grid
 - [ ] **🟡** Pagination ou Infinite Scroll
   - ⏱️ 2h
 
 ### Détail
-- [ ] **🔴** `LieuDetailComponent` - Vue complète
-  - ⏱️ 4h | Carte, critères, avis, formulaire avis
+- [x] **🔴** `LieuDetailComponent` - Vue complète
+  - ⏱️ 4h | ✅ Carte, critères, avis
 - [ ] **🔴** `AvisListComponent` - Liste des avis
   - ⏱️ 2h | Avec étoiles
 - [ ] **🔴** `AvisFormComponent` - Soumettre un avis
@@ -348,12 +348,12 @@
 
 ## 5.2 Frontend - Auth Flow
 
-- [ ] **🔴** Implémenter le login
-  - ⏱️ 2h | Appel API + stockage JWT
-- [ ] **🔴** Stocker JWT dans localStorage
-  - ⏱️ 1h | `localStorage.setItem('token', jwt)`
-- [ ] **🔴** Créer `AuthGuard`
-  - ⏱️ 1h | Redirection si non authentifié
+- [x] **🔴** Implémenter le login
+  - ⏱️ 2h | ✅ Appel API + stockage JWT
+- [x] **🔴** Stocker JWT dans localStorage
+  - ⏱️ 1h | ✅ `localStorage.setItem('token', jwt)`
+- [x] **🔴** Créer `AuthGuard`
+  - ⏱️ 1h | ✅ authGuard + publicGuard créés
 - [ ] **🔴** Créer `RoleGuard`
   - ⏱️ 1h | Vérification rôle pour routes admin
 - [ ] **🔴** Intercepteur HTTP (ajout Bearer token)
