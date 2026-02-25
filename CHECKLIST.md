@@ -371,71 +371,12 @@
 
 ## 6.1 Setup API LLM
 
-- [ ] **🔴** Choisir provider (OpenAI GPT-4 / Claude)
-  - ⏱️ 1h | Comparer coûts
-- [ ] **🔴** Créer compte et obtenir clé API
-  - ⏱️ 30min | Stocker dans variables d'environnement
-- [ ] **🔴** Configurer clé dans Spring Boot
-  - ⏱️ 30min | `application.properties`
-
----
-
-## 6.2 Backend - Service IA
-
-- [ ] **🔴** Créer `LLMService`
-  - ⏱️ 3h | Client HTTP vers API
-- [ ] **🔴** Concevoir le prompt d'extraction
-  - ⏱️ 4h | 
-    ```
-    "Analyse cette requête et extrais les critères disponibles: 
-    [liste des critères de la BDD]. Réponds en JSON: 
-    {tags: [...], confidence: 0.95, explanation: '...'}"
-    ```
-- [ ] **🔴** Implémenter mapping JSON → Tag IDs
-  - ⏱️ 2h | Recherche par nom dans la BDD
-- [ ] **🔴** Créer `SmartSearchService`
-  - ⏱️ 2h | Orchestration: LLM → Tags → Recherche standard
-- [ ] **🔴** Endpoint POST /api/smart-search
-  - ⏱️ 2h | 
-    - Request: `{"query": "café calme avec wifi"}`
-    - Response: résultats + explication
-- [ ] **🔴** Gérer les critères inconnus
-  - ⏱️ 2h | Message: "Critère 'X' non disponible"
-- [ ] **🟡** Implémenter le caching (Redis)
-  - ⏱️ 3h | Cache des requêtes similaires
-- [ ] **🟡** Fallback si API LLM down
-  - ⏱️ 2h | Redirection vers recherche manuelle
-
-## 6.4 Circuit Breaker & Resilience (Recommandé)
-
-- [ ] **🟢** Ajouter Resilience4j (Circuit Breaker)
-  - ⏱️ 2h | Protection contre indisponibilité LLM
-    ```java
-    @CircuitBreaker(name = "llm", fallbackMethod = "fallbackSearch")
-    public SmartSearchResponse search(String query) { ... }
-    ```
-- [ ] **🟢** Implémenter méthode fallback
-  - ⏱️ 1h | Extraction mots-clés alternative
-- [ ] **🟢** Configurer retry avec backoff
-  - ⏱️ 1h | 3 tentatives max, délai exponentiel
-
----
-
-## 6.3 Frontend - Interface Smart Finder
-
-- [ ] **🔴** Créer `SmartSearchComponent`
-  - ⏱️ 3h | Input type chat, bouton microphone (optionnel)
-- [ ] **🔴** Afficher l'extraction IA à l'utilisateur
-  - ⏱️ 2h | "J'ai compris : café + calme + wifi"
-- [ ] **🔴** Afficher les résultats
-  - ⏱️ 1h | Réutiliser ListeLieuxComponent
-- [ ] **🔴** Bouton "Affiner avec les filtres"
-  - ⏱️ 1h | Lien vers recherche manuelle avec filtres pré-remplis
-- [ ] **🟡** Suggestions de prompts
-  - ⏱️ 1h | Chips: "Café calme pour travailler", "Bibliothèque ouverte le soir"
-- [ ] **🟡** Historique des recherches IA
-  - ⏱️ 2h | localStorage
-
+- [x] **🔴** Choisir provider (OpenAI GPT-4 / Claude)
+  - ⏱️ 1h | ✅ OpenAI GPT-4o-mini choisi
+- [x] **🔴** Créer compte et obtenir clé API
+  - ⏱️ 30min | ✅ Clé stockée dans variables d'environnement
+- [x] **🔴** Configurer clé dans Spring Boot
+  - ⏱️ 30min | ✅ `application.properties`
 ---
 
 ## 6.4 Tests & Optimisation IA

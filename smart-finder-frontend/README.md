@@ -1,59 +1,151 @@
-# SmartFinderFrontend
+# Smart Finder - Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.5.
+Application frontend Angular pour le PFE Smart Finder - Plateforme de recommandation d'espaces de coworking avec recherche intelligente par IA.
 
-## Development server
+## 🚀 Technologies
 
-To start a local development server, run:
+- **Angular 19** - Framework frontend
+- **TypeScript 5.7** - Langage
+- **Tailwind CSS** - Framework CSS
+- **RxJS** - Programmation réactive
+- **Angular Router** - Navigation
+- **HTTP Client** - Communication API
+- **Standalone Components** - Architecture moderne
 
-```bash
-ng serve
+## 📁 Structure du Projet
+
+```
+smart-finder-frontend/
+├── src/app/
+│   ├── auth/                    # Authentification
+│   │   ├── components/          # Login, Register
+│   │   ├── services/            # AuthService
+│   │   └── models/              # Interfaces utilisateur
+│   ├── lieu/                    # Espaces de coworking
+│   │   ├── components/          # LieuList, LieuDetail
+│   │   ├── services/            # LieuService
+│   │   └── models/              # Interfaces lieu
+│   ├── critere/                 # Critères de recherche
+│   │   ├── services/            # CritereService
+│   │   └── models/              # Interfaces critère
+│   ├── avis/                    # Système d'avis
+│   │   └── services/            # AvisService
+│   ├── smart-search/            # Module IA
+│   │   └── components/          # SmartSearchComponent
+│   ├── shared/                  # Composants partagés
+│   │   ├── components/          # Navbar
+│   │   ├── guards/              # AuthGuard, PublicGuard
+│   │   └── interceptors/        # AuthInterceptor
+│   └── environments/            # Configurations
+├── src/styles.scss              # Styles globaux + Tailwind
+├── tailwind.config.js           # Configuration Tailwind
+└── angular.json                 # Configuration Angular
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🛠️ Installation
 
-## Code scaffolding
+### Prérequis
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Node.js 22+
+- npm 10+
+- Angular CLI 19.1.5
+
+### Configuration
+
+1. **Cloner le projet**
+   ```bash
+   git clone <repository-url>
+   cd smart-finder-frontend
+   ```
+
+2. **Installer les dépendances**
+   ```bash
+   npm install
+   ```
+
+3. **Configurer l'environnement**
+   
+   Modifier `src/environments/environment.ts`:
+   ```typescript
+   export const environment = {
+     production: false,
+     apiUrl: 'http://localhost:8080/api/v1'
+   };
+   ```
+
+4. **Lancer l'application**
+   ```bash
+   ng serve
+   # ou
+   npm start
+   ```
+
+   Accéder à `http://localhost:4200`
+
+## 📱 Fonctionnalités
+
+### 🔐 Authentification
+- Inscription avec choix de rôle (USER, OWNER)
+- Connexion avec JWT
+- Stockage local des tokens
+- Guards de protection des routes
+- Intercepteur HTTP automatique (Bearer token)
+
+### 🔍 Recherche
+- **Recherche par filtres** - Interface avec filtres par catégorie
+- **Recherche intelligente IA** - Input naturel avec extraction automatique des critères
+- Résultats paginés avec cartes d'informations
+
+### 📍 Espaces (Lieux)
+- Liste avec filtres responsive
+- Détail complet avec critères et avis
+- Design mobile-first
+
+### ⭐ Avis
+- Système de notation 1-5 étoiles
+- Commentaires
+- Note moyenne calculée automatiquement
+
+### 🤖 Concierge Virtuel (Phase 6)
+- Input type chat pour requêtes en langage naturel
+- Exemples de prompts suggérés
+- Affichage des critères extraits par l'IA
+- Résultats avec scores de pertinence
+
+## 🧪 Tests
 
 ```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
+# Tests unitaires
 ng test
+
+# Tests e2e
+ng e2e
+
+# Lint
+ng lint
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## 📦 Build Production
 
 ```bash
-ng e2e
+ng build --configuration production
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Sortie dans `dist/smart-finder-frontend/`
 
-## Additional Resources
+## 🚀 Déploiement
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Vercel
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+## 👥 Équipe
+
+Projet de fin d'études (PFE) - 2026
+
+## 📝 Licence
+
+Propriétaire - Tous droits réservés
+
