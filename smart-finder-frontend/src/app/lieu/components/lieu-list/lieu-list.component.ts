@@ -7,13 +7,7 @@ import { CritereService } from '../../../critere/services/critere.service';
 import { Lieu, SearchRequest, SearchResponse } from '../../models/lieu.model';
 import { Critere } from '../../../critere/models/critere.model';
 
-interface CategorieGroup {
-  nom: string;
-  label: string;
-  icon: string;
-  criteres: Critere[];
-  open: boolean;
-}
+
 
 @Component({
   selector: 'app-lieu-list',
@@ -102,53 +96,25 @@ interface CategorieGroup {
             [class.max-h-[1000px]]="filtersOpen || !isMobile()"
             [class.pb-6]="filtersOpen || !isMobile()"
           >
-            <!-- Category Groups -->
-            <div class="space-y-4">
-              <div *ngFor="let group of categorieGroups" class="border border-gray-100 rounded-xl overflow-hidden">
-                <!-- Category Header -->
-                <button 
-                  (click)="group.open = !group.open"
-                  class="w-full flex items-center justify-between px-4 py-3 bg-gray-50/50 hover:bg-gray-50 transition-colors text-left"
-                >
-                  <div class="flex items-center gap-2">
-                    <span class="text-lg">{{ group.icon }}</span>
-                    <span class="text-sm font-semibold text-gray-700">{{ group.label }}</span>
-                    <span class="text-xs text-gray-400">({{ group.criteres.length }})</span>
-                    <span 
-                      *ngIf="countSelectedInGroup(group) > 0" 
-                      class="w-5 h-5 bg-primary-500 text-white text-xs rounded-full flex items-center justify-center font-bold"
-                    >
-                      {{ countSelectedInGroup(group) }}
-                    </span>
-                  </div>
-                  <svg 
-                    class="w-4 h-4 text-gray-400 transition-transform" 
-                    [class.rotate-180]="group.open"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                  </svg>
-                </button>
-                
-                <!-- Critères in group -->
-                <div *ngIf="group.open" class="p-3 flex flex-wrap gap-2">
-                  <button
-                    *ngFor="let critere of group.criteres"
-                    (click)="toggleCritere(critere.id)"
-                    [class.bg-primary-600]="selectedCriteres.has(critere.id)"
-                    [class.text-white]="selectedCriteres.has(critere.id)"
-                    [class.border-primary-600]="selectedCriteres.has(critere.id)"
-                    [class.shadow-primary-200]="selectedCriteres.has(critere.id)"
-                    [class.bg-white]="!selectedCriteres.has(critere.id)"
-                    [class.text-gray-700]="!selectedCriteres.has(critere.id)"
-                    [class.border-gray-200]="!selectedCriteres.has(critere.id)"
-                    class="px-3.5 py-2 rounded-lg text-sm font-medium border hover:border-primary-400 transition-all shadow-sm flex items-center gap-1.5"
-                  >
-                    <span *ngIf="critere.icon">{{ critere.icon }}</span>
-                    {{ critere.nom }}
-                  </button>
-                </div>
-              </div>
+            <!-- Flat List of Criteria (Compact) -->
+            <div class="flex flex-wrap gap-2.5 pt-2">
+              <button
+                *ngFor="let critere of criteres"
+                (click)="toggleCritere(critere.id)"
+                [class.bg-primary-600]="selectedCriteres.has(critere.id)"
+                [class.text-white]="selectedCriteres.has(critere.id)"
+                [class.border-primary-600]="selectedCriteres.has(critere.id)"
+                [class.shadow-md]="selectedCriteres.has(critere.id)"
+                [class.shadow-primary-500/20]="selectedCriteres.has(critere.id)"
+                [class.bg-white]="!selectedCriteres.has(critere.id)"
+                [class.text-gray-700]="!selectedCriteres.has(critere.id)"
+                [class.border-gray-200]="!selectedCriteres.has(critere.id)"
+                [class.hover:border-primary-400]="!selectedCriteres.has(critere.id)"
+                class="px-4 py-2 rounded-full text-sm font-medium border transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <span *ngIf="critere.icon" class="text-base leading-none">{{ critere.icon }}</span>
+                {{ critere.nom }}
+              </button>
             </div>
 
             <!-- Reset -->
@@ -269,22 +235,11 @@ interface CategorieGroup {
 export class LieuListComponent implements OnInit {
   lieux: Lieu[] = [];
   criteres: Critere[] = [];
-  categorieGroups: CategorieGroup[] = [];
   selectedCriteres = new Set<number>();
   loading = false;
   searchQuery = '';
   totalResults = 0;
   filtersOpen = true;
-
-  private categorieLabels: Record<string, { label: string; icon: string }> = {
-    'CONNECTIVITE': { label: 'Connectivité', icon: '📶' },
-    'AMBIANCE': { label: 'Ambiance', icon: '✨' },
-    'CONFORT': { label: 'Confort', icon: '🪑' },
-    'SERVICES': { label: 'Services', icon: '☕' },
-    'HORAIRES': { label: 'Horaires', icon: '🕐' },
-    'RESTAURATION': { label: 'Restauration', icon: '🍽️' },
-    'ACCESSIBILITE': { label: 'Accessibilité', icon: '♿' },
-  };
 
   constructor(
     private lieuService: LieuService,
@@ -305,38 +260,12 @@ export class LieuListComponent implements OnInit {
     this.critereService.findAll().subscribe({
       next: (criteres) => {
         this.criteres = criteres;
-        this.buildCategorieGroups();
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Erreur chargement critères:', err)
     });
   }
 
-  buildCategorieGroups(): void {
-    const grouped = new Map<string, Critere[]>();
-    for (const c of this.criteres) {
-      const cat = c.categorie || 'AUTRE';
-      if (!grouped.has(cat)) {
-        grouped.set(cat, []);
-      }
-      grouped.get(cat)!.push(c);
-    }
-
-    this.categorieGroups = Array.from(grouped.entries()).map(([key, criteres]) => {
-      const meta = this.categorieLabels[key] || { label: key, icon: '📌' };
-      return {
-        nom: key,
-        label: meta.label,
-        icon: meta.icon,
-        criteres,
-        open: true
-      };
-    });
-  }
-
-  countSelectedInGroup(group: CategorieGroup): number {
-    return group.criteres.filter(c => this.selectedCriteres.has(c.id)).length;
-  }
 
   loadLieux(): void {
     this.loading = true;

@@ -60,20 +60,21 @@ smart-finder-backend/
 
 3. **Configurer les variables d'environnement**
    
-   Créer un fichier `application-local.properties`:
+   Créez un fichier `.env` à la racine du projet (au même niveau que `pom.xml`) en copiant le modèle `.env.example` :
    ```properties
-   # Database
-   spring.datasource.url=jdbc:mysql://localhost:3306/smartfinder
-   spring.datasource.username=smartfinder
-   spring.datasource.password=your_password
+   # --- DATABASE ---
+   DB_PASSWORD=your_password
    
-   # JWT
-   jwt.secret=your-jwt-secret-key-at-least-32-characters-long
-   jwt.expiration=86400000
+   # --- JWT SECRET ---
+   JWT_SECRET=your-jwt-secret-key-at-least-32-characters-long
    
-   # OpenAI (Phase 6)
-   openai.api.key=your-openai-api-key
-   openai.model=gpt-4o-mini
+   # --- DEEPSEEK API ---
+   OPENAI_API_KEY=your-deepseek-api-key
+
+   # --- CLOUDINARY (Images) ---
+   CLOUDINARY_CLOUD_NAME=your_cloud_name
+   CLOUDINARY_API_KEY=your_api_key
+   CLOUDINARY_API_SECRET=your_api_secret
    ```
 
 4. **Compiler et exécuter**
@@ -133,6 +134,16 @@ smart-finder-backend/
 - `critere` - Tags/catégories de recherche
 - `lieu_critere` - Association many-to-many
 - `avis` - Notes et commentaires
+
+### Utilisateurs de Test (Mock Data)
+Au premier démarrage, le backend insère automatiquement des données de test (lieux, critères, avis) ainsi que les comptes suivants :
+
+| Rôle | Email | Mot de passe | Description |
+|---|---|---|---|
+| **ADMIN** | `admin@smartfinder.com` | `admin123` | Accès complet, gestion des critères et modération |
+| **OWNER** | `khalil@smartfinder.com` | `owner123` | Propriétaire des lieux créés par défaut, accès dashboard |
+| **USER** | `marie@test.com` | `user1234` | Utilisateur simple, peut laisser des avis |
+| **USER** | `thomas@test.com` | `user1234` | Utilisateur simple, peut laisser des avis |
 
 ## 🤖 Module IA (Phase 6)
 
