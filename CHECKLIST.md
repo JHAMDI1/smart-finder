@@ -206,14 +206,14 @@
 
 ## 3.5 Système d'Avis
 
-- [ ] **🔴** Calcul de la note moyenne (@Formula)
-  - ⏱️ 1h | `AVG(a.note)` dans entité Lieu
-- [ ] **🔴** Endpoint POST /api/lieux/{id}/avis
-  - ⏱️ 1h | Validation: note 1-5
-- [ ] **🔴** Vérification "un avis par utilisateur par lieu"
-  - ⏱️ 1h | @UniqueConstraint ou vérification service
-- [ ] **🟡** Modération des avis (Admin)
-  - ⏱️ 2h | DELETE /api/avis/{id} (admin only)
+- [x] **🔴** Calcul de la note moyenne (@Formula)
+  - ⏱️ 1h | ✅ Moyenne recalculée via AvisService.updateNoteMoyenne()
+- [x] **🔴** Endpoint POST /api/lieux/{id}/avis
+  - ⏱️ 1h | ✅ AvisController + validation note 1-5
+- [x] **🔴** Vérification "un avis par utilisateur par lieu"
+  - ⏱️ 1h | ✅ Vérifié dans AvisService.create()
+- [x] **🟡** Modération des avis (Admin)
+  - ⏱️ 2h | ✅ AdminDashboard avec suppression avis
 
 **✅ Livrable Phase 3** : Moteur de recherche fonctionnel avec ranking + Avis
 
@@ -273,26 +273,26 @@
   - ⏱️ 2h | ✅ Formulaire avec choix rôle
 
 ### Recherche
-- [ ] **🔴** `FiltresComponent` - Checkboxes par catégorie
-  - ⏱️ 4h | Groupes: Connectivité, Ambiance, Services...
+- [x] **🔴** `FiltresComponent` - Checkboxes par catégorie
+  - ⏱️ 4h | ✅ Groupés par catégorie avec accordéon collapsible
 - [x] **🔴** `LieuListComponent` - Grille/Liste responsive
   - ⏱️ 3h | ✅ Cards avec filtres mobile-first
-- [ ] **🔴** `LieuCardComponent` - Carte individuelle
-  - ⏱️ 2h | Mobile: full width, Desktop: grid
-- [ ] **🟡** Pagination ou Infinite Scroll
-  - ⏱️ 2h
+- [x] **🔴** `LieuCardComponent` - Carte individuelle
+  - ⏱️ 2h | ✅ Intégré dans LieuListComponent
+- [x] **🟡** Pagination ou Infinite Scroll
+  - ⏱️ 2h | ✅ Pagination via SearchService
 
 ### Détail
 - [x] **🔴** `LieuDetailComponent` - Vue complète
   - ⏱️ 4h | ✅ Carte, critères, avis
-- [ ] **🔴** `AvisListComponent` - Liste des avis
-  - ⏱️ 2h | Avec étoiles
-- [ ] **🔴** `AvisFormComponent` - Soumettre un avis
-  - ⏱️ 2h | Rating stars + textarea
+- [x] **🔴** `AvisListComponent` - Liste des avis
+  - ⏱️ 2h | ✅ Avec étoiles et initiales utilisateur
+- [x] **🔴** `AvisFormComponent` - Soumettre un avis
+  - ⏱️ 2h | ✅ Rating stars + textarea intégré dans AvisList
 
 ### Admin
-- [ ] **🟡** `AdminCritereComponent` - Gestion CRUD critères
-  - ⏱️ 3h | Table + formulaire ajout
+- [x] **🟡** `AdminCritereComponent` - Gestion CRUD critères
+  - ⏱️ 3h | ✅ AdminDashboard avec 3 onglets (Critères, Avis, Lieux)
 
 ---
 
@@ -348,8 +348,8 @@
   - ⏱️ 1h | ✅ `localStorage.setItem('token', jwt)`
 - [x] **🔴** Créer `AuthGuard`
   - ⏱️ 1h | ✅ authGuard + publicGuard créés
-- [ ] **🔴** Créer `RoleGuard`
-  - ⏱️ 1h | Vérification rôle pour routes admin
+- [x] **🔴** Créer `RoleGuard`
+  - ⏱️ 1h | ✅ ownerGuard + adminGuard créés
 - [x] **🔴** Intercepteur HTTP (ajout Bearer token)
   - ⏱️ 1h | ✅ Header Authorization via auth.interceptor.ts
 - [ ] **🟡** Gestion expiration token
@@ -516,18 +516,18 @@
 ## Fonctionnalités (Doivent marcher)
 - [x] L'application se lance sans erreur
   - ✅ Backend Spring Boot + Frontend Angular démarrent correctement
-- [ ] Moteur de recherche par filtres fonctionne
-  - ⏳ Backend prêt (JPA Specifications), Frontend UI filtres à créer
+- [x] Moteur de recherche par filtres fonctionne
+  - ✅ JPA Specifications + Filtres groupés par catégorie + Compteur résultats
 - [x] Le Concierge Virtuel (IA) comprend et répond
   - ✅ DeepSeek API intégrée, interface chat conversationnel
 - [x] Authentification JWT protège les routes admin
-  - ✅ SecurityConfig + Guards Angular en place
-- [ ] Système d'avis et notes fonctionne
-  - ⏳ Backend CRUD OK, Frontend formulaire étoiles à créer
-- [ ] Interface responsive sur mobile
-  - ⏳ Tailwind CSS en place, tests mobile à faire
-- [ ] API REST documentée (Swagger)
-  - ⏳ Postman collection existe, Swagger à configurer
+  - ✅ SecurityConfig + Guards Angular (auth, owner, admin)
+- [x] Système d'avis et notes fonctionne
+  - ✅ AvisList avec étoiles, commentaires, moyenne auto-recalculée
+- [x] Interface responsive sur mobile
+  - ✅ Tailwind CSS + Bottom nav mobile + Filtres responsive
+- [x] API REST documentée (Swagger)
+  - ✅ SpringDoc OpenAPI + OpenApiConfig avec JWT bearer auth
 
 ## Code (Doit être propre)
 - [x] Repository Git avec historique de commits
@@ -549,8 +549,8 @@
 - [x] README.md (backend + frontend)
   - ✅ smart-finder-backend/README.md
   - ✅ smart-finder-frontend/README.md
-- [ ] Documentation API (Swagger/Postman)
-  - ⏳ Swagger UI disponible sur `/swagger-ui.html`
+- [x] Documentation API (Swagger/Postman)
+  - ✅ Swagger UI disponible sur `/swagger-ui/index.html` + OpenApiConfig avec JWT
 - [ ] Rapport de projet PFE (Word/PDF)
   - 📋 À créer pour la soutenance
 - [ ] Slides de soutenance
