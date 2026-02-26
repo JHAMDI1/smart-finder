@@ -22,7 +22,7 @@ public class CritereController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CritereDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<CritereDTO> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(critereService.findById(id));
     }
 
@@ -35,13 +35,13 @@ public class CritereController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CritereDTO> update(@PathVariable Long id, @RequestBody Critere critere) {
+    public ResponseEntity<CritereDTO> update(@PathVariable("id") Long id, @RequestBody Critere critere) {
         return ResponseEntity.ok(critereService.update(id, critere));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         critereService.delete(id);
         return ResponseEntity.noContent().build();
     }

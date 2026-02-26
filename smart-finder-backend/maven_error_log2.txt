@@ -1,0 +1,76 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------< com.smartfinder:smart-finder-backend >----------------
+[INFO] Building Smart Finder Backend 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ smart-finder-backend ---
+[INFO] Deleting C:\Users\jawis\OneDrive\Desktop\pfe-khalil\smart-finder-backend\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ smart-finder-backend ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ smart-finder-backend ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 38 source files with javac [debug release 17] to target\classes
+[INFO] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/auth/security/JwtUtil.java: C:\Users\jawis\OneDrive\Desktop\pfe-khalil\smart-finder-backend\src\main\java\com\smartfinder\auth\security\JwtUtil.java uses or overrides a deprecated API.
+[INFO] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/auth/security/JwtUtil.java: Recompile with -Xlint:deprecation for details.
+[INFO] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/smartsearch/service/LLMService.java: Some input files use unchecked or unsafe operations.
+[INFO] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/smartsearch/service/LLMService.java: Recompile with -Xlint:unchecked for details.
+[INFO] Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/critere/Critere.java:[44,51] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/Lieu.java:[61,30] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/Lieu.java:[64,44] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/mapper/LieuMapper.java:[21,10] Unmapped target properties: "proprietaire, updatedAt, lieuCriteres, avis".
+[INFO] 4 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuSearchService.java:[54,41] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuSearchService.java:[55,43] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuSearchService.java:[57,47] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuController.java:[37,45] incompatible types: java.lang.Double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuController.java:[38,47] incompatible types: java.lang.Double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuController.java:[51,45] incompatible types: java.lang.Double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuController.java:[52,47] incompatible types: java.lang.Double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuService.java:[32,29] incompatible types: double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuService.java:[88,41] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuService.java:[89,43] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuService.java:[91,47] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/avis/AvisService.java:[64,33] incompatible types: double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/avis/AvisService.java:[70,33] incompatible types: double cannot be converted to java.math.BigDecimal
+[INFO] 13 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.770 s
+[INFO] Finished at: 2026-02-26T02:08:46+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project smart-finder-backend: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuSearchService.java:[54,41] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuSearchService.java:[55,43] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuSearchService.java:[57,47] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuController.java:[37,45] incompatible types: java.lang.Double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuController.java:[38,47] incompatible types: java.lang.Double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuController.java:[51,45] incompatible types: java.lang.Double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuController.java:[52,47] incompatible types: java.lang.Double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuService.java:[32,29] incompatible types: double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuService.java:[88,41] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuService.java:[89,43] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/lieu/LieuService.java:[91,47] incompatible types: java.math.BigDecimal cannot be converted to java.lang.Double
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/avis/AvisService.java:[64,33] incompatible types: double cannot be converted to java.math.BigDecimal
+[ERROR] /C:/Users/jawis/OneDrive/Desktop/pfe-khalil/smart-finder-backend/src/main/java/com/smartfinder/avis/AvisService.java:[70,33] incompatible types: double cannot be converted to java.math.BigDecimal
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

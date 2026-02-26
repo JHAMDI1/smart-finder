@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.smartfinder.auth.Utilisateur;
+import com.smartfinder.auth.UtilisateurRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,8 +20,14 @@ public class LieuService {
 
     private final LieuRepository lieuRepository;
     private final CritereRepository critereRepository;
+    private final UtilisateurRepository utilisateurRepository;
 
     public LieuDTO create(Lieu lieu, List<Long> critereIds) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Utilisateur currentUtilisateur = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        lieu.setProprietaire(currentUtilisateur);
         if (critereIds != null) {
             for (Long critereId : critereIds) {
                 Critere critere = critereRepository.findById(critereId)
@@ -29,7 +38,7 @@ public class LieuService {
                 lieu.getLieuCriteres().add(lc);
             }
         }
-        lieu.setNoteMoyenne(0.0);
+        lieu.setNoteMoyenne(java.math.BigDecimal.ZERO);
         Lieu saved = lieuRepository.save(lieu);
         return mapToDTO(saved);
     }
@@ -51,14 +60,14 @@ public class LieuService {
     public LieuDTO update(Long id, Lieu lieuDetails, List<Long> critereIds) {
         Lieu lieu = lieuRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Lieu non trouvé"));
-        
+
         lieu.setNom(lieuDetails.getNom());
         lieu.setAdresse(lieuDetails.getAdresse());
         lieu.setDescription(lieuDetails.getDescription());
         lieu.setLatitude(lieuDetails.getLatitude());
         lieu.setLongitude(lieuDetails.getLongitude());
         lieu.setHoraires(lieuDetails.getHoraires());
-        
+
         if (critereIds != null) {
             lieu.getLieuCriteres().clear();
             for (Long critereId : critereIds) {
@@ -70,7 +79,7 @@ public class LieuService {
                 lieu.getLieuCriteres().add(lc);
             }
         }
-        
+
         Lieu updated = lieuRepository.save(lieu);
         return mapToDTO(updated);
     }
@@ -90,7 +99,7 @@ public class LieuService {
         dto.setHoraires(lieu.getHoraires());
         dto.setNoteMoyenne(lieu.getNoteMoyenne());
         dto.setCreatedAt(lieu.getCreatedAt());
-        
+
         if (lieu.getLieuCriteres() != null) {
             dto.setCriteres(lieu.getLieuCriteres().stream()
                     .map(lc -> {
@@ -104,7 +113,7 @@ public class LieuService {
                     })
                     .collect(Collectors.toList()));
         }
-        
+
         return dto;
     }
 }

@@ -26,10 +26,14 @@ public class Avis {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lieu_id", nullable = false)
+    @lombok.EqualsAndHashCode.Exclude
+    @lombok.ToString.Exclude
     private Lieu lieu;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "utilisateur_id", nullable = false)
+    @lombok.EqualsAndHashCode.Exclude
+    @lombok.ToString.Exclude
     private Utilisateur utilisateur;
 
     @Column(nullable = false)

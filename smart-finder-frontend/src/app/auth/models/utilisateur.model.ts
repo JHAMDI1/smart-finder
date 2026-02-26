@@ -12,6 +12,7 @@ export interface RegisterRequest {
   password: string;
   nom: string;
   prenom: string;
+  role: 'USER' | 'OWNER' | 'ADMIN';
 }
 
 export interface LoginRequest {
@@ -21,5 +22,9 @@ export interface LoginRequest {
 
 export interface AuthResponse {
   token: string;
-  utilisateur: Utilisateur;
+  id: number;
+  email: string;
+  nom: string;
+  prenom: string;
+  role: 'USER' | 'OWNER' | 'ADMIN';
 }

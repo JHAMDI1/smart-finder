@@ -1,0 +1,1 @@
+{"timestamp":"2026-02-26T03:17:58.771+00:00","status":500,"error":"Internal Server Error","message":"Name for argument of type [java.lang.Long] not specified, and parameter name information not found in class file either.","path":"/api/v1/lieux/9"}

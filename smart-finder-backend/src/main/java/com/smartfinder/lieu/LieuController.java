@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 
 @RestController
@@ -24,11 +25,12 @@ public class LieuController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LieuDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<LieuDTO> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(lieuService.findById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN')")
     public ResponseEntity<LieuDTO> create(@RequestBody LieuCreateRequest request) {
         Lieu lieu = new Lieu();
         lieu.setNom(request.getNom());
@@ -37,13 +39,14 @@ public class LieuController {
         lieu.setLatitude(request.getLatitude());
         lieu.setLongitude(request.getLongitude());
         lieu.setHoraires(request.getHoraires());
-        
+
         LieuDTO created = lieuService.create(lieu, request.getCritereIds());
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LieuDTO> update(@PathVariable Long id, @RequestBody LieuCreateRequest request) {
+    @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN')")
+    public ResponseEntity<LieuDTO> update(@PathVariable("id") Long id, @RequestBody LieuCreateRequest request) {
         Lieu lieu = new Lieu();
         lieu.setNom(request.getNom());
         lieu.setAdresse(request.getAdresse());
@@ -51,13 +54,14 @@ public class LieuController {
         lieu.setLatitude(request.getLatitude());
         lieu.setLongitude(request.getLongitude());
         lieu.setHoraires(request.getHoraires());
-        
+
         LieuDTO updated = lieuService.update(id, lieu, request.getCritereIds());
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         lieuService.delete(id);
         return ResponseEntity.noContent().build();
     }

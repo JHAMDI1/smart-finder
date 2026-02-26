@@ -9,14 +9,14 @@ import { Critere } from '../models/critere.model';
 export class CritereService {
   private apiUrl = 'http://localhost:8080/api/v1/criteres';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   findAll(): Observable<Critere[]> {
     return this.http.get<Critere[]>(this.apiUrl);
   }
 
   findActifs(): Observable<Critere[]> {
-    return this.http.get<Critere[]>(`${this.apiUrl}/actifs`);
+    return this.http.get<Critere[]>(this.apiUrl);
   }
 
   findById(id: number): Observable<Critere> {

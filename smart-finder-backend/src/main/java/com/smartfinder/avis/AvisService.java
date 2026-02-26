@@ -22,18 +22,18 @@ public class AvisService {
     public AvisDTO create(Long lieuId, Avis avis, Utilisateur utilisateur) {
         Lieu lieu = lieuRepository.findById(lieuId)
                 .orElseThrow(() -> new RuntimeException("Lieu non trouvé"));
-        
+
         if (avisRepository.findByLieuIdAndUtilisateurId(lieuId, utilisateur.getId()).isPresent()) {
             throw new RuntimeException("Vous avez déjà donné un avis pour ce lieu");
         }
-        
+
         avis.setLieu(lieu);
         avis.setUtilisateur(utilisateur);
-        
+
         Avis saved = avisRepository.save(avis);
-        
+
         updateNoteMoyenne(lieu);
-        
+
         return mapToDTO(saved);
     }
 
@@ -47,27 +47,27 @@ public class AvisService {
     public void delete(Long id, Utilisateur utilisateur) {
         Avis avis = avisRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Avis non trouvé"));
-        
+
         if (!avis.getUtilisateur().getId().equals(utilisateur.getId())) {
             throw new RuntimeException("Vous ne pouvez supprimer que vos propres avis");
         }
-        
+
         Lieu lieu = avis.getLieu();
         avisRepository.deleteById(id);
-        
+
         updateNoteMoyenne(lieu);
     }
 
     private void updateNoteMoyenne(Lieu lieu) {
         List<Avis> avisList = avisRepository.findByLieuId(lieu.getId());
         if (avisList.isEmpty()) {
-            lieu.setNoteMoyenne(0.0);
+            lieu.setNoteMoyenne(java.math.BigDecimal.ZERO);
         } else {
             double moyenne = avisList.stream()
                     .mapToInt(Avis::getNote)
                     .average()
                     .orElse(0.0);
-            lieu.setNoteMoyenne(moyenne);
+            lieu.setNoteMoyenne(java.math.BigDecimal.valueOf(moyenne));
         }
         lieuRepository.save(lieu);
     }

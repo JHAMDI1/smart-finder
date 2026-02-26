@@ -1,126 +1,222 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { LieuService } from '../../services/lieu.service';
+import { CritereService } from '../../../critere/services/critere.service';
 import { Lieu, SearchRequest, SearchResponse } from '../../models/lieu.model';
+import { Critere } from '../../../critere/models/critere.model';
 
 @Component({
   selector: 'app-lieu-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   template: `
-    <div class="min-h-screen bg-gray-50 pb-20">
-      <!-- Header -->
-      <header class="bg-primary-600 text-white p-4 sticky top-0 z-10">
-        <h1 class="text-xl font-bold">Smart Finder</h1>
-        <p class="text-sm opacity-90">Trouvez votre espace de travail idéal</p>
-      </header>
+    <div class="min-h-screen bg-gray-50 pb-24 md:pb-12 pt-20">
+      
+      <!-- Hero Header -->
+      <div class="relative bg-gray-900 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-900 via-gray-900 to-indigo-900 opacity-90"></div>
+        
+        <!-- Decorative blobs -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-primary-500 blur-[80px] opacity-40 mix-blend-screen"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-indigo-500 blur-[100px] opacity-30 mix-blend-screen"></div>
 
-      <!-- Search Bar -->
-      <div class="p-4 bg-white shadow-sm">
-        <div class="relative">
-          <input
-            type="text"
-            placeholder="Rechercher un lieu..."
-            class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-primary-500"
-            (input)="onSearch($event)"
-          />
-          <svg class="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-        </div>
-      </div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
+          <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
+            Trouvez l'espace idéal pour <span class="bg-gradient-to-r from-primary-400 to-indigo-400 bg-clip-text text-transparent">explorer</span>
+          </h1>
+          <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 font-light">
+            Découvrez les meilleurs cafés, espaces de coworking et bibliothèques adaptés à vos besoins.
+          </p>
 
-      <!-- Filters -->
-      <div class="px-4 py-2 bg-white border-b">
-        <div class="flex gap-2 overflow-x-auto pb-2">
-          <button
-            *ngFor="let critere of criteres"
-            (click)="toggleCritere(critere.id)"
-            [class.bg-primary-600]="selectedCriteres.has(critere.id)"
-            [class.text-white]="selectedCriteres.has(critere.id)"
-            [class.bg-gray-100]="!selectedCriteres.has(critere.id)"
-            [class.text-gray-700]="!selectedCriteres.has(critere.id)"
-            class="px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors"
-          >
-            {{ critere.nom }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Results Count -->
-      <div class="px-4 py-2 text-sm text-gray-600">
-        {{ lieux.length }} lieu{{ lieux.length > 1 ? 'x' : '' }} trouvé{{ lieux.length > 1 ? 's' : '' }}
-      </div>
-
-      <!-- Lieux List -->
-      <div class="px-4 space-y-4">
-        <div
-          *ngFor="let lieu of lieux"
-          class="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
-          (click)="onSelectLieu(lieu)"
-        >
-          <!-- Image Placeholder -->
-          <div class="h-40 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
-            <svg class="w-16 h-16 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-            </svg>
+          <!-- Search Bar -->
+          <div class="max-w-2xl mx-auto relative group">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-indigo-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300"></div>
+            <div class="relative bg-white/10 backdrop-blur-md rounded-2xl p-2 flex items-center border border-white/20 shadow-2xl">
+              <svg class="w-6 h-6 text-gray-400 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input
+                type="text"
+                [(ngModel)]="searchQuery"
+                (keyup.enter)="loadLieux()"
+                placeholder="Ex: Café calme avec Wi-Fi..."
+                class="w-full bg-transparent border-none text-white placeholder-gray-400 px-4 py-3 focus:outline-none focus:ring-0 text-lg"
+              />
+              <button 
+                (click)="loadLieux()"
+                class="bg-white text-gray-900 hover:bg-gray-50 px-6 py-3 rounded-xl font-semibold transition-colors shadow-sm"
+              >
+                Chercher
+              </button>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <!-- Content -->
-          <div class="p-4">
-            <div class="flex justify-between items-start mb-2">
-              <h3 class="font-bold text-lg text-gray-900">{{ lieu.nom }}</h3>
-              <div class="flex items-center gap-1 bg-yellow-100 px-2 py-1 rounded">
-                <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+        <!-- Filters Card -->
+        <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <svg class="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+              </svg>
+              Filtrer par critères
+            </h2>
+            <div class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+              {{ lieux.length }} résultat(s)
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-2">
+            <button
+              *ngFor="let critere of criteres"
+              (click)="toggleCritere(critere.id)"
+              [class.bg-primary-600]="selectedCriteres.has(critere.id)"
+              [class.text-white]="selectedCriteres.has(critere.id)"
+              [class.border-primary-600]="selectedCriteres.has(critere.id)"
+              [class.bg-white]="!selectedCriteres.has(critere.id)"
+              [class.text-gray-700]="!selectedCriteres.has(critere.id)"
+              [class.border-gray-200]="!selectedCriteres.has(critere.id)"
+              class="px-4 py-2 rounded-full text-sm font-medium border hover:border-primary-500 hover:opacity-90 transition-all shadow-sm"
+            >
+              {{ critere.nom }}
+            </button>
+            <div *ngIf="criteres.length === 0" class="text-sm text-gray-400 italic py-2">
+              Chargement des critères...
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="loading" class="flex flex-col items-center justify-center py-20">
+          <div class="relative w-16 h-16">
+            <div class="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-primary-600 rounded-full border-t-transparent animate-spin"></div>
+          </div>
+          <p class="mt-4 text-gray-500 font-medium">Recherche des meilleurs lieux...</p>
+        </div>
+
+        <!-- Lieux Grid -->
+        <div *ngIf="!loading && lieux.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+          <a
+            *ngFor="let lieu of lieux"
+            [routerLink]="['/lieux', lieu.id]"
+            class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl hover:shadow-primary-500/10 border border-gray-100 overflow-hidden transition-all duration-300 hover:-translate-y-1 flex flex-col h-full"
+          >
+            <!-- Image Area -->
+            <div class="h-48 relative overflow-hidden bg-gray-100">
+              <div class="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-indigo-500/20 group-hover:scale-105 transition-transform duration-500"></div>
+              
+              <!-- Placeholder pattern -->
+              <svg class="absolute inset-0 w-full h-full text-gray-200" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
+                 <pattern id="grid-pattern-{{lieu.id}}" width="20" height="20" patternUnits="userSpaceOnUse">
+                   <circle cx="2" cy="2" r="1.5" />
+                 </pattern>
+                 <rect width="100%" height="100%" [attr.fill]="'url(#grid-pattern-' + lieu.id + ')'" />
+              </svg>
+
+              <!-- Location Icon -->
+              <div class="absolute inset-0 flex items-center justify-center">
+                 <div class="w-16 h-16 bg-white/80 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
+                   <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                   </svg>
+                 </div>
+              </div>
+
+              <!-- Rating Badge -->
+              <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
-                <span class="text-sm font-medium text-yellow-700">{{ lieu.noteMoyenne | number:'1.1' }}</span>
+                <span class="font-bold text-gray-900">{{ lieu.noteMoyenne | number:'1.1-1' }}</span>
               </div>
             </div>
 
-            <p class="text-gray-600 text-sm mb-3">{{ lieu.adresse }}</p>
+            <!-- Content -->
+            <div class="p-6 flex flex-col flex-grow">
+              <h3 class="font-bold text-xl text-gray-900 group-hover:text-primary-600 transition-colors mb-2 line-clamp-1">
+                {{ lieu.nom }}
+              </h3>
+              
+              <div class="flex items-start gap-2 mb-4 text-gray-500">
+                <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <p class="text-sm line-clamp-2">{{ lieu.adresse }}</p>
+              </div>
 
-            <!-- Criteres -->
-            <div class="flex flex-wrap gap-2" *ngIf="lieu.criteres?.length">
-              <span
-                *ngFor="let c of lieu.criteres | slice:0:3"
-                class="text-xs px-2 py-1 bg-primary-50 text-primary-700 rounded"
-              >
-                {{ c.nom }}
-              </span>
-              <span *ngIf="(lieu.criteres?.length || 0) > 3" class="text-xs text-gray-500">
-                +{{ (lieu.criteres?.length || 0) - 3 }}
-              </span>
+              <p class="text-sm text-gray-600 line-clamp-2 mb-6 flex-grow">
+                {{ lieu.description }}
+              </p>
+
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-gray-100">
+                <span
+                  *ngFor="let c of lieu.criteres | slice:0:3"
+                  class="text-xs font-semibold px-2.5 py-1 bg-primary-50 text-primary-700 rounded-md border border-primary-100"
+                >
+                  {{ c.nom }}
+                </span>
+                <span *ngIf="(lieu.criteres?.length || 0) > 3" class="text-xs font-medium px-2 py-1 bg-gray-100 text-gray-600 rounded-md">
+                  +{{ (lieu.criteres?.length || 0) - 3 }}
+                </span>
+              </div>
             </div>
-          </div>
+          </a>
         </div>
-      </div>
 
-      <!-- Loading State -->
-      <div *ngIf="loading" class="flex justify-center py-8">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+        <!-- Empty State -->
+        <div *ngIf="!loading && lieux.length === 0" class="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100 mt-10">
+          <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Aucun lieu trouvé</h3>
+          <p class="text-gray-500 max-w-sm mx-auto">
+            Nous n'avons pas trouvé de lieux correspondant à vos critères. Essayez de modifier votre recherche.
+          </p>
+          <button (click)="clearFilters()" class="mt-6 text-primary-600 font-semibold hover:text-primary-700 hover:underline">
+            Réinitialiser les filtres
+          </button>
+        </div>
+
       </div>
     </div>
   `
 })
 export class LieuListComponent implements OnInit {
   lieux: Lieu[] = [];
-  criteres = [
-    { id: 1, nom: 'Wi-Fi' },
-    { id: 2, nom: 'Prises' },
-    { id: 3, nom: 'Calme' },
-    { id: 4, nom: 'Terrasse' },
-    { id: 5, nom: 'Parking' },
-    { id: 6, nom: 'Vegan' }
-  ];
+  criteres: Critere[] = [];
   selectedCriteres = new Set<number>();
   loading = false;
   searchQuery = '';
 
-  constructor(private lieuService: LieuService) {}
+  constructor(
+    private lieuService: LieuService,
+    private critereService: CritereService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
+    this.loadCriteres();
     this.loadLieux();
+  }
+
+  loadCriteres(): void {
+    // We use findAll() but in a real app might use findActifs()
+    // Using findAll() for now as we don't know if finding logic is implemented fully
+    this.critereService.findAll().subscribe({
+      next: (criteres) => {
+        this.criteres = criteres;
+      },
+      error: (err) => console.error('Erreur chargement critères:', err)
+    });
   }
 
   loadLieux(): void {
@@ -136,10 +232,12 @@ export class LieuListComponent implements OnInit {
       next: (response: SearchResponse) => {
         this.lieux = response.content;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err: unknown) => {
         console.error('Error loading lieux:', err);
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -153,13 +251,10 @@ export class LieuListComponent implements OnInit {
     this.loadLieux();
   }
 
-  onSearch(event: Event): void {
-    this.searchQuery = (event.target as HTMLInputElement).value;
+  clearFilters(): void {
+    this.selectedCriteres.clear();
+    this.searchQuery = '';
     this.loadLieux();
   }
-
-  onSelectLieu(lieu: Lieu): void {
-    console.log('Selected lieu:', lieu);
-    // Navigation to detail page will be implemented later
-  }
 }
+

@@ -41,5 +41,8 @@ public class Critere {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "critere", cascade = CascadeType.ALL, orphanRemoval = true)
+    @lombok.EqualsAndHashCode.Exclude
+    @lombok.ToString.Exclude
+    @Builder.Default
     private Set<com.smartfinder.lieu.LieuCritere> lieuCriteres = new HashSet<>();
 }

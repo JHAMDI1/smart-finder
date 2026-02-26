@@ -34,13 +34,13 @@ public class SmartSearchService {
 
         // 1. Appel LLM pour extraire les critères
         String llmResponse = llmService.extractCriteriaFromQuery(request.userQuery());
-        
+
         // 2. Parser la réponse JSON
         Map<String, Object> extractedCriteria = parseLLMResponse(llmResponse);
-        
+
         // 3. Mapper les critères vers les IDs de la BDD
         List<Long> critereIds = mapCriteriaToIds(extractedCriteria);
-        
+
         // 4. Rechercher les lieux correspondants
         List<Lieu> matchingLieux;
         if (critereIds.isEmpty()) {
@@ -48,27 +48,27 @@ public class SmartSearchService {
         } else {
             matchingLieux = lieuRepository.findByCriteriaIds(critereIds, critereIds.size());
         }
-        
+
         // 5. Trier par pertinence (score basé sur le nombre de critères matchés)
         List<LieuDTO> results = matchingLieux.stream()
                 .map(lieuMapper::toDto)
                 .collect(Collectors.toList());
-        
+
         return new SmartSearchResponse(
                 results,
                 extractedCriteria,
                 "Recherche intelligente pour: " + request.userQuery(),
                 results.size(),
-                UUID.randomUUID().toString()
-        );
+                UUID.randomUUID().toString());
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Object> parseLLMResponse(String response) {
         try {
             // Nettoyer la réponse (enlever markdown si présent)
             String cleanJson = response.replaceAll("```json", "")
-                                       .replaceAll("```", "")
-                                       .trim();
+                    .replaceAll("```", "")
+                    .trim();
             return objectMapper.readValue(cleanJson, Map.class);
         } catch (Exception e) {
             log.error("Erreur parsing LLM response: {}", e.getMessage());
@@ -78,20 +78,21 @@ public class SmartSearchService {
 
     private List<Long> mapCriteriaToIds(Map<String, Object> criteria) {
         List<Long> ids = new ArrayList<>();
-        
+
         // Récupérer tous les critères actifs
         List<Critere> allCriteres = critereRepository.findByActifTrue();
-        
+
         // Mapper ambiance
         if (criteria.get("ambiance") != null) {
             String ambiance = criteria.get("ambiance").toString().toLowerCase();
             allCriteres.stream()
                     .filter(c -> c.getNom().toLowerCase().contains(ambiance) ||
-                                (c.getCategorie() != null && c.getCategorie().toString().toLowerCase().contains("ambiance")))
+                            (c.getCategorie() != null
+                                    && c.getCategorie().toString().toLowerCase().contains("ambiance")))
                     .findFirst()
                     .ifPresent(c -> ids.add(c.getId()));
         }
-        
+
         // Mapper équipements
         @SuppressWarnings("unchecked")
         List<String> equipments = (List<String>) criteria.get("equipments");
@@ -104,7 +105,7 @@ public class SmartSearchService {
                         .ifPresent(c -> ids.add(c.getId()));
             }
         }
-        
+
         // Mapper services
         @SuppressWarnings("unchecked")
         List<String> services = (List<String>) criteria.get("services");
@@ -117,41 +118,39 @@ public class SmartSearchService {
                         .ifPresent(c -> ids.add(c.getId()));
             }
         }
-        
+
         // Mapper wifi
         if (criteria.get("wifiSpeed") != null) {
-            String wifi = criteria.get("wifiSpeed").toString().toLowerCase();
             allCriteres.stream()
                     .filter(c -> c.getNom().toLowerCase().contains("wifi") ||
-                                c.getNom().toLowerCase().contains("fibre") ||
-                                c.getNom().toLowerCase().contains("internet"))
+                            c.getNom().toLowerCase().contains("fibre") ||
+                            c.getNom().toLowerCase().contains("internet"))
                     .findFirst()
                     .ifPresent(c -> ids.add(c.getId()));
         }
-        
+
         return ids.stream().distinct().collect(Collectors.toList());
     }
 
     // Fallback si le service LLM est indisponible
     public SmartSearchResponse fallbackSearch(SmartSearchRequest request, Throwable t) {
         log.warn("Fallback activé pour smart-search: {}", t.getMessage());
-        
+
         // Recherche simple par mots-clés dans la description
         List<Lieu> allLieux = lieuRepository.findAll();
         String query = request.userQuery().toLowerCase();
-        
+
         List<LieuDTO> results = allLieux.stream()
-                .filter(l -> l.getDescription() != null && 
-                            l.getDescription().toLowerCase().contains(query))
+                .filter(l -> l.getDescription() != null &&
+                        l.getDescription().toLowerCase().contains(query))
                 .map(lieuMapper::toDto)
                 .collect(Collectors.toList());
-        
+
         return new SmartSearchResponse(
                 results,
                 Map.of("fallback", true, "error", t.getMessage()),
                 "Recherche de secours (service IA indisponible)",
                 results.size(),
-                UUID.randomUUID().toString()
-        );
+                UUID.randomUUID().toString());
     }
 }

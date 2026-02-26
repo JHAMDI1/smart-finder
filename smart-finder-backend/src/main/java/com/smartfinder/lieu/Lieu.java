@@ -34,9 +34,11 @@ public class Lieu {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private Double latitude;
+    @Column(precision = 10, scale = 8)
+    private java.math.BigDecimal latitude;
 
-    private Double longitude;
+    @Column(precision = 11, scale = 8)
+    private java.math.BigDecimal longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proprietaire_id", nullable = false)
@@ -44,8 +46,8 @@ public class Lieu {
 
     private String horaires;
 
-    @Column(name = "note_moyenne", precision = 2, scale = 1)
-    private Double noteMoyenne;
+    @Column(name = "note_moyenne", precision = 3, scale = 2)
+    private java.math.BigDecimal noteMoyenne;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -56,8 +58,14 @@ public class Lieu {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "lieu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @lombok.EqualsAndHashCode.Exclude
+    @lombok.ToString.Exclude
+    @Builder.Default
     private Set<LieuCritere> lieuCriteres = new HashSet<>();
 
     @OneToMany(mappedBy = "lieu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @lombok.EqualsAndHashCode.Exclude
+    @lombok.ToString.Exclude
+    @Builder.Default
     private Set<com.smartfinder.avis.Avis> avis = new HashSet<>();
 }

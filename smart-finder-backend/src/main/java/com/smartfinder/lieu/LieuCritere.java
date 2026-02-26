@@ -21,9 +21,13 @@ public class LieuCritere {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lieu_id", nullable = false)
+    @lombok.EqualsAndHashCode.Exclude
+    @lombok.ToString.Exclude
     private Lieu lieu;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "critere_id", nullable = false)
+    @lombok.EqualsAndHashCode.Exclude
+    @lombok.ToString.Exclude
     private Critere critere;
 }

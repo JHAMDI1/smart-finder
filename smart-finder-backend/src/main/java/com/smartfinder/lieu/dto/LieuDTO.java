@@ -12,10 +12,10 @@ public class LieuDTO {
     private String nom;
     private String adresse;
     private String description;
-    private Double latitude;
-    private Double longitude;
+    private java.math.BigDecimal latitude;
+    private java.math.BigDecimal longitude;
     private String horaires;
-    private Double noteMoyenne;
+    private java.math.BigDecimal noteMoyenne;
     private List<CritereDTO> criteres;
     private LocalDateTime createdAt;
 }

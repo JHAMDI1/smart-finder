@@ -10,6 +10,7 @@ export interface Lieu {
   horaires?: string;
   noteMoyenne: number;
   criteres?: Critere[];
+  images?: string[];
   createdAt?: string;
 }
 

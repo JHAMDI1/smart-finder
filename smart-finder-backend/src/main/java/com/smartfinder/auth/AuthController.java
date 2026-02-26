@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -21,7 +21,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UtilisateurDTO> register(@RequestBody Utilisateur utilisateur) {
-        utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
         UtilisateurDTO created = utilisateurService.create(utilisateur);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
@@ -43,8 +42,7 @@ public class AuthController {
                 utilisateur.getEmail(),
                 utilisateur.getPrenom(),
                 utilisateur.getNom(),
-                utilisateur.getRole().name()
-        );
+                utilisateur.getRole().name());
 
         return ResponseEntity.ok(response);
     }

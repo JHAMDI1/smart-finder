@@ -18,13 +18,13 @@ public class AvisController {
     private final AvisService avisService;
 
     @GetMapping
-    public ResponseEntity<List<AvisDTO>> findByLieuId(@PathVariable Long lieuId) {
+    public ResponseEntity<List<AvisDTO>> findByLieuId(@PathVariable("lieuId") Long lieuId) {
         return ResponseEntity.ok(avisService.findByLieuId(lieuId));
     }
 
     @PostMapping
     public ResponseEntity<AvisDTO> create(
-            @PathVariable Long lieuId,
+            @PathVariable("lieuId") Long lieuId,
             @RequestBody Avis avis,
             @AuthenticationPrincipal Utilisateur utilisateur) {
         AvisDTO created = avisService.create(lieuId, avis, utilisateur);
@@ -33,7 +33,7 @@ public class AvisController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @AuthenticationPrincipal Utilisateur utilisateur) {
         avisService.delete(id, utilisateur);
         return ResponseEntity.noContent().build();

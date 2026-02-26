@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -11,11 +12,22 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/api/v1/auth';
   private currentUserSubject = new BehaviorSubject<Utilisateur | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+  private isBrowser: boolean;
 
   constructor(private http: HttpClient) {
-    const stored = localStorage.getItem('currentUser');
-    if (stored) {
-      this.currentUserSubject.next(JSON.parse(stored));
+    this.isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+    if (this.isBrowser) {
+      const stored = localStorage.getItem('currentUser');
+      if (stored && stored !== 'undefined') {
+        try {
+          this.currentUserSubject.next(JSON.parse(stored));
+        } catch (e) {
+          console.error('Failed to parse currentUser from localStorage', e);
+          localStorage.removeItem('currentUser');
+        }
+      } else if (stored === 'undefined') {
+        localStorage.removeItem('currentUser');
+      }
     }
   }
 
@@ -26,25 +38,45 @@ export class AuthService {
   login(request: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request).pipe(
       tap(response => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('currentUser', JSON.stringify(response.utilisateur));
-        this.currentUserSubject.next(response.utilisateur);
+        const user: Utilisateur = {
+          id: response.id,
+          email: response.email,
+          nom: response.nom,
+          prenom: response.prenom,
+          role: response.role
+        };
+
+        if (this.isBrowser) {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
+        this.currentUserSubject.next(user);
       })
     );
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
+    if (this.isBrowser) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('currentUser');
+    }
     this.currentUserSubject.next(null);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (this.isBrowser) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  hasRole(role: string): boolean {
+    const user = this.currentUserSubject.value;
+    return user ? user.role === role : false;
   }
 
   getCurrentUser(): Utilisateur | null {
