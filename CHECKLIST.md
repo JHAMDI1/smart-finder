@@ -72,8 +72,8 @@
   - ⏱️ 15min | ✅ Angular CLI 19.1.5 installé
 - [x] **🔴** Vérifier MySQL 8.0 et MySQL Workbench
   - ⏱️ 1h | ✅ MySQL 9.4.0 déjà installé
-- [-] **🔴** Créer la base de données "smartfinder"
-  - ⏱️ 30min | ⚠️ EN ATTENTE - MySQL server non démarré (localhost:3306)
+- [x] **🔴** Créer la base de données "smartfinder"
+  - ⏱️ 30min | ✅ BDD créée via XAMPP MySQL (root, sans mot de passe)
 - [x] **🟡** Configurer Postman
   - ⏱️ 30min | ✅ Collection créée: smart-finder-api-postman.json
 - [x] **🔴** Créer la structure du projet Git
@@ -193,7 +193,7 @@
 
 # PHASE 4 : FRONTEND ANGULAR
 ### 🗓️ Semaines 7-8 | ⏱️ ~40h
-[x] **🔴** Phase 4 terminée
+- [x] **🔴** Phase 4 terminée
 
 ## 4.1 Setup Angular
 
@@ -261,9 +261,9 @@
 ### Layout
 - [x] **🔴** `NavbarComponent` - Navigation responsive
   - ⏱️ 2h | ✅ Mobile bottom nav + Desktop top nav
-- [ ] **🔴** `FooterComponent`
+- [ ] **🟡** `FooterComponent`
   - ⏱️ 30min
-- [ ] **🔴** `HomeComponent` - Page d'accueil
+- [ ] **🟡** `HomeComponent` - Page d'accueil (landing page)
   - ⏱️ 2h | Hero + CTA Recherche
 
 ### Authentification
@@ -364,12 +364,16 @@
 
 ## 6.1 Setup API LLM
 
-- [x] **🔴** Choisir provider (OpenAI GPT-4 / Claude)
-  - ⏱️ 1h | ✅ OpenAI GPT-4o-mini choisi
+- [x] **🔴** Choisir provider (OpenAI GPT-4 / Claude / DeepSeek)
+  - ⏱️ 1h | ✅ DeepSeek choisi (modèle deepseek-chat)
 - [x] **🔴** Créer compte et obtenir clé API
-  - ⏱️ 30min | ✅ Clé stockée dans variables d'environnement
+  - ⏱️ 30min | ✅ Clé stockée dans application.properties
 - [x] **🔴** Configurer clé dans Spring Boot
-  - ⏱️ 30min | ✅ `application.properties`
+  - ⏱️ 30min | ✅ `openai.api.url=https://api.deepseek.com/v1/chat/completions`
+- [x] **🔴** Interface Chat IA (Concierge Virtuel)
+  - ⏱️ 4h | ✅ Bulles de chat, typing indicator, résultats en carrousel
+- [x] **🔴** DataInitializer avec données mock réalistes
+  - ⏱️ 2h | ✅ 6 lieux, 10 critères, 10 avis, comptes admin/owner/user
 ---
 
 ## 6.4 Tests & Optimisation IA
@@ -510,13 +514,20 @@
 # 🎯 CHECKLIST FINALE - AVANT SOUTENANCE
 
 ## Fonctionnalités (Doivent marcher)
-- [ ] L'application se lance sans erreur
+- [x] L'application se lance sans erreur
+  - ✅ Backend Spring Boot + Frontend Angular démarrent correctement
 - [ ] Moteur de recherche par filtres fonctionne
-- [ ] Le Concierge Virtuel (IA) comprend et répond
-- [ ] Authentification JWT protège les routes admin
+  - ⏳ Backend prêt (JPA Specifications), Frontend UI filtres à créer
+- [x] Le Concierge Virtuel (IA) comprend et répond
+  - ✅ DeepSeek API intégrée, interface chat conversationnel
+- [x] Authentification JWT protège les routes admin
+  - ✅ SecurityConfig + Guards Angular en place
 - [ ] Système d'avis et notes fonctionne
+  - ⏳ Backend CRUD OK, Frontend formulaire étoiles à créer
 - [ ] Interface responsive sur mobile
+  - ⏳ Tailwind CSS en place, tests mobile à faire
 - [ ] API REST documentée (Swagger)
+  - ⏳ Postman collection existe, Swagger à configurer
 
 ## Code (Doit être propre)
 - [x] Repository Git avec historique de commits
