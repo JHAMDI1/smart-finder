@@ -169,12 +169,13 @@ export class AvisList implements OnInit {
       next: (data: Avis[]) => {
         this.avis = data;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err: unknown) => {
         console.error('Erreur lors du chargement des avis', err);
-        // Silently fail or show simple message, not breaking the detail page
         this.error = "Impossible de charger les avis.";
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -185,10 +186,11 @@ export class AvisList implements OnInit {
     this.submitting = true;
     this.avisService.create(this.lieuId, this.newAvis).subscribe({
       next: (newAvisItem: Avis) => {
-        this.avis.unshift(newAvisItem); // Add to top
-        this.newAvis = { note: 0, commentaire: '' }; // Reset form
+        this.avis.unshift(newAvisItem);
+        this.newAvis = { note: 0, commentaire: '' };
         this.hoverRating = 0;
         this.submitting = false;
+        this.cdr.detectChanges();
       },
       error: (err: unknown) => {
         console.error("Erreur lors de l'ajout", err);

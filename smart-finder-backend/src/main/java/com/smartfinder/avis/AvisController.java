@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/lieux/{lieuId}/avis")
@@ -28,10 +29,14 @@ public class AvisController {
     @PostMapping
     public ResponseEntity<AvisDTO> create(
             @PathVariable("lieuId") Long lieuId,
-            @RequestBody Avis avis) {
+            @RequestBody Map<String, Object> body) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Utilisateur utilisateur = utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
+
+        Avis avis = new Avis();
+        avis.setNote((Integer) body.get("note"));
+        avis.setCommentaire((String) body.get("commentaire"));
 
         AvisDTO created = avisService.create(lieuId, avis, utilisateur);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
