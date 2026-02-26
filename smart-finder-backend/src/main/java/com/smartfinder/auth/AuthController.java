@@ -7,6 +7,7 @@ import com.smartfinder.auth.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,10 +29,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         Utilisateur utilisateur = utilisateurService.findByEmailForAuth(request.email())
-                .orElseThrow(() -> new RuntimeException("Email ou mot de passe incorrect"));
+                .orElseThrow(() -> new BadCredentialsException("Email ou mot de passe incorrect"));
 
         if (!passwordEncoder.matches(request.password(), utilisateur.getPassword())) {
-            throw new RuntimeException("Email ou mot de passe incorrect");
+            throw new BadCredentialsException("Email ou mot de passe incorrect");
         }
 
         String token = jwtUtil.generateToken(utilisateur.getEmail(), utilisateur.getRole().name());
