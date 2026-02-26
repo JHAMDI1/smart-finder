@@ -11,7 +11,7 @@ import { Critere } from '../../../critere/models/critere.model';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './lieu-form.html',
-  styleUrl: './lieu-form.scss',
+  styleUrls: ['./lieu-form.scss'],
 })
 export class LieuForm implements OnInit {
   lieuForm: FormGroup;

@@ -1,13 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { LieuService } from '../../services/lieu.service';
 import { Lieu } from '../../models/lieu.model';
+import { AvisList } from '../../../avis/avis/components/avis-list/avis-list';
 
 @Component({
   selector: 'app-lieu-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, AvisList],
   template: `
     <div class="min-h-screen bg-gray-50 pb-24 md:pb-12">
       
@@ -120,6 +122,9 @@ import { Lieu } from '../../models/lieu.model';
                   </div>
                 </div>
               </div>
+
+              <!-- Avis Section -->
+              <app-avis-list *ngIf="lieu" [lieuId]="lieu.id"></app-avis-list>
 
             </div>
 

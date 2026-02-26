@@ -7,6 +7,14 @@ import { CritereService } from '../../../critere/services/critere.service';
 import { Lieu, SearchRequest, SearchResponse } from '../../models/lieu.model';
 import { Critere } from '../../../critere/models/critere.model';
 
+interface CategorieGroup {
+  nom: string;
+  label: string;
+  icon: string;
+  criteres: Critere[];
+  open: boolean;
+}
+
 @Component({
   selector: 'app-lieu-list',
   standalone: true,
@@ -24,7 +32,7 @@ import { Critere } from '../../../critere/models/critere.model';
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
           <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-            Trouvez l'espace idéal pour <span class="bg-gradient-to-r from-primary-400 to-indigo-400 bg-clip-text text-transparent">explorer</span>
+            Trouvez l'espace idéal pour <span class="bg-gradient-to-r from-primary-400 to-indigo-400 bg-clip-text text-transparent">travailler</span>
           </h1>
           <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 font-light">
             Découvrez les meilleurs cafés, espaces de coworking et bibliothèques adaptés à vos besoins.
@@ -57,35 +65,103 @@ import { Critere } from '../../../critere/models/critere.model';
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
         <!-- Filters Card -->
-        <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 border border-gray-100">
-          <div class="flex items-center justify-between mb-4">
+        <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+          <!-- Header (clickable on mobile) -->
+          <button 
+            (click)="filtersOpen = !filtersOpen" 
+            class="w-full flex items-center justify-between p-5 md:p-6 text-left"
+          >
             <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
               <svg class="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
               </svg>
               Filtrer par critères
+              <span *ngIf="selectedCriteres.size > 0" class="bg-primary-100 text-primary-700 text-xs font-bold px-2 py-0.5 rounded-full">
+                {{ selectedCriteres.size }} actif(s)
+              </span>
             </h2>
-            <div class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-              {{ lieux.length }} résultat(s)
+            <div class="flex items-center gap-3">
+              <div class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                {{ totalResults }} résultat(s)
+              </div>
+              <svg 
+                class="w-5 h-5 text-gray-400 transition-transform md:hidden" 
+                [class.rotate-180]="filtersOpen"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
             </div>
-          </div>
+          </button>
           
-          <div class="flex flex-wrap gap-2">
-            <button
-              *ngFor="let critere of criteres"
-              (click)="toggleCritere(critere.id)"
-              [class.bg-primary-600]="selectedCriteres.has(critere.id)"
-              [class.text-white]="selectedCriteres.has(critere.id)"
-              [class.border-primary-600]="selectedCriteres.has(critere.id)"
-              [class.bg-white]="!selectedCriteres.has(critere.id)"
-              [class.text-gray-700]="!selectedCriteres.has(critere.id)"
-              [class.border-gray-200]="!selectedCriteres.has(critere.id)"
-              class="px-4 py-2 rounded-full text-sm font-medium border hover:border-primary-500 hover:opacity-90 transition-all shadow-sm"
-            >
-              {{ critere.nom }}
-            </button>
-            <div *ngIf="criteres.length === 0" class="text-sm text-gray-400 italic py-2">
-              Chargement des critères...
+          <!-- Filter Body -->
+          <div 
+            class="px-5 md:px-6 overflow-hidden transition-all duration-300"
+            [class.max-h-0]="!filtersOpen && isMobile()"
+            [class.pb-0]="!filtersOpen && isMobile()"
+            [class.max-h-[1000px]]="filtersOpen || !isMobile()"
+            [class.pb-6]="filtersOpen || !isMobile()"
+          >
+            <!-- Category Groups -->
+            <div class="space-y-4">
+              <div *ngFor="let group of categorieGroups" class="border border-gray-100 rounded-xl overflow-hidden">
+                <!-- Category Header -->
+                <button 
+                  (click)="group.open = !group.open"
+                  class="w-full flex items-center justify-between px-4 py-3 bg-gray-50/50 hover:bg-gray-50 transition-colors text-left"
+                >
+                  <div class="flex items-center gap-2">
+                    <span class="text-lg">{{ group.icon }}</span>
+                    <span class="text-sm font-semibold text-gray-700">{{ group.label }}</span>
+                    <span class="text-xs text-gray-400">({{ group.criteres.length }})</span>
+                    <span 
+                      *ngIf="countSelectedInGroup(group) > 0" 
+                      class="w-5 h-5 bg-primary-500 text-white text-xs rounded-full flex items-center justify-center font-bold"
+                    >
+                      {{ countSelectedInGroup(group) }}
+                    </span>
+                  </div>
+                  <svg 
+                    class="w-4 h-4 text-gray-400 transition-transform" 
+                    [class.rotate-180]="group.open"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </button>
+                
+                <!-- Critères in group -->
+                <div *ngIf="group.open" class="p-3 flex flex-wrap gap-2">
+                  <button
+                    *ngFor="let critere of group.criteres"
+                    (click)="toggleCritere(critere.id)"
+                    [class.bg-primary-600]="selectedCriteres.has(critere.id)"
+                    [class.text-white]="selectedCriteres.has(critere.id)"
+                    [class.border-primary-600]="selectedCriteres.has(critere.id)"
+                    [class.shadow-primary-200]="selectedCriteres.has(critere.id)"
+                    [class.bg-white]="!selectedCriteres.has(critere.id)"
+                    [class.text-gray-700]="!selectedCriteres.has(critere.id)"
+                    [class.border-gray-200]="!selectedCriteres.has(critere.id)"
+                    class="px-3.5 py-2 rounded-lg text-sm font-medium border hover:border-primary-400 transition-all shadow-sm flex items-center gap-1.5"
+                  >
+                    <span *ngIf="critere.icon">{{ critere.icon }}</span>
+                    {{ critere.nom }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reset -->
+            <div *ngIf="selectedCriteres.size > 0" class="mt-4 flex justify-end">
+              <button 
+                (click)="clearFilters()" 
+                class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center gap-1 transition-colors"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                Réinitialiser les filtres
+              </button>
             </div>
           </div>
         </div>
@@ -110,7 +186,6 @@ import { Critere } from '../../../critere/models/critere.model';
             <div class="h-48 relative overflow-hidden bg-gray-100">
               <div class="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-indigo-500/20 group-hover:scale-105 transition-transform duration-500"></div>
               
-              <!-- Placeholder pattern -->
               <svg class="absolute inset-0 w-full h-full text-gray-200" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
                  <pattern id="grid-pattern-{{lieu.id}}" width="20" height="20" patternUnits="userSpaceOnUse">
                    <circle cx="2" cy="2" r="1.5" />
@@ -118,7 +193,6 @@ import { Critere } from '../../../critere/models/critere.model';
                  <rect width="100%" height="100%" [attr.fill]="'url(#grid-pattern-' + lieu.id + ')'" />
               </svg>
 
-              <!-- Location Icon -->
               <div class="absolute inset-0 flex items-center justify-center">
                  <div class="w-16 h-16 bg-white/80 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
                    <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,7 +234,7 @@ import { Critere } from '../../../critere/models/critere.model';
                   *ngFor="let c of lieu.criteres | slice:0:3"
                   class="text-xs font-semibold px-2.5 py-1 bg-primary-50 text-primary-700 rounded-md border border-primary-100"
                 >
-                  {{ c.nom }}
+                  {{ c.icon ? c.icon + ' ' : '' }}{{ c.nom }}
                 </span>
                 <span *ngIf="(lieu.criteres?.length || 0) > 3" class="text-xs font-medium px-2 py-1 bg-gray-100 text-gray-600 rounded-md">
                   +{{ (lieu.criteres?.length || 0) - 3 }}
@@ -193,9 +267,22 @@ import { Critere } from '../../../critere/models/critere.model';
 export class LieuListComponent implements OnInit {
   lieux: Lieu[] = [];
   criteres: Critere[] = [];
+  categorieGroups: CategorieGroup[] = [];
   selectedCriteres = new Set<number>();
   loading = false;
   searchQuery = '';
+  totalResults = 0;
+  filtersOpen = true;
+
+  private categorieLabels: Record<string, { label: string; icon: string }> = {
+    'CONNECTIVITE': { label: 'Connectivité', icon: '📶' },
+    'AMBIANCE': { label: 'Ambiance', icon: '✨' },
+    'CONFORT': { label: 'Confort', icon: '🪑' },
+    'SERVICES': { label: 'Services', icon: '☕' },
+    'HORAIRES': { label: 'Horaires', icon: '🕐' },
+    'RESTAURATION': { label: 'Restauration', icon: '🍽️' },
+    'ACCESSIBILITE': { label: 'Accessibilité', icon: '♿' },
+  };
 
   constructor(
     private lieuService: LieuService,
@@ -208,15 +295,45 @@ export class LieuListComponent implements OnInit {
     this.loadLieux();
   }
 
+  isMobile(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth < 768;
+  }
+
   loadCriteres(): void {
-    // We use findAll() but in a real app might use findActifs()
-    // Using findAll() for now as we don't know if finding logic is implemented fully
     this.critereService.findAll().subscribe({
       next: (criteres) => {
         this.criteres = criteres;
+        this.buildCategorieGroups();
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Erreur chargement critères:', err)
     });
+  }
+
+  buildCategorieGroups(): void {
+    const grouped = new Map<string, Critere[]>();
+    for (const c of this.criteres) {
+      const cat = c.categorie || 'AUTRE';
+      if (!grouped.has(cat)) {
+        grouped.set(cat, []);
+      }
+      grouped.get(cat)!.push(c);
+    }
+
+    this.categorieGroups = Array.from(grouped.entries()).map(([key, criteres]) => {
+      const meta = this.categorieLabels[key] || { label: key, icon: '📌' };
+      return {
+        nom: key,
+        label: meta.label,
+        icon: meta.icon,
+        criteres,
+        open: true
+      };
+    });
+  }
+
+  countSelectedInGroup(group: CategorieGroup): number {
+    return group.criteres.filter(c => this.selectedCriteres.has(c.id)).length;
   }
 
   loadLieux(): void {
@@ -231,6 +348,7 @@ export class LieuListComponent implements OnInit {
     this.lieuService.search(request).subscribe({
       next: (response: SearchResponse) => {
         this.lieux = response.content;
+        this.totalResults = response.totalElements;
         this.loading = false;
         this.cdr.detectChanges();
       },

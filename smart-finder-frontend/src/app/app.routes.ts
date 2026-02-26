@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard, publicGuard } from './shared/guards/auth.guard';
 import { ownerGuard } from './shared/guards/owner.guard';
+import { adminGuard } from './shared/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,11 @@ export const routes: Routes = [
     path: 'owner/lieux/nouveau',
     canActivate: [authGuard, ownerGuard],
     loadComponent: () => import('./owner/components/lieu-form/lieu-form').then(m => m.LieuForm)
+  },
+  {
+    path: 'admin/dashboard',
+    canActivate: [authGuard, adminGuard],
+    loadComponent: () => import('./admin/components/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
   },
   {
     path: '**',

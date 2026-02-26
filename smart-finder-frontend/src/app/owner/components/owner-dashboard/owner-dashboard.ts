@@ -10,7 +10,7 @@ import { AuthService } from '../../../auth/services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './owner-dashboard.html',
-  styleUrl: './owner-dashboard.scss',
+  styleUrls: ['./owner-dashboard.scss'],
 })
 export class OwnerDashboard implements OnInit {
   mesLieux: Lieu[] = [];
