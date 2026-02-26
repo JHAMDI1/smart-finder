@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AvisService, Avis } from '../../../services/avis.service';
@@ -114,7 +114,7 @@ import { AuthService } from '../../../../auth/services/auth.service';
               </div>
               <div>
                 <h4 class="font-semibold text-gray-900">{{ a.auteurPrenom }} {{ a.auteurNom }}</h4>
-                <p class="text-xs text-gray-500">{{ a.createdAt | date:'longDate':'':'fr' }}</p>
+                <p class="text-xs text-gray-500">{{ a.createdAt | date:'dd/MM/yyyy' }}</p>
               </div>
             </div>
             
@@ -150,7 +150,8 @@ export class AvisList implements OnInit {
 
   constructor(
     private avisService: AvisService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -193,6 +194,7 @@ export class AvisList implements OnInit {
         console.error("Erreur lors de l'ajout", err);
         this.error = "Une erreur est survenue lors de l'envoi de votre avis.";
         this.submitting = false;
+        this.cdr.detectChanges();
       }
     });
   }
