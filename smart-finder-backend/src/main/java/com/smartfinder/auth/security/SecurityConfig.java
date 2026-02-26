@@ -48,6 +48,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/smart-search/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/criteres/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/avis/**").permitAll()
+                        // Avis endpoints (nested under /lieux/{id}/avis)
+                        .requestMatchers(HttpMethod.GET, "/lieux/*/avis").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/lieux/*/avis").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/lieux/*/avis/*").authenticated()
                         // Authenticated endpoints
                         .requestMatchers(HttpMethod.POST, "/avis/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/lieux").authenticated()
