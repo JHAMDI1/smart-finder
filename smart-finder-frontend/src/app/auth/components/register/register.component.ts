@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
     <div class="min-h-screen bg-gray-50 flex items-center justify-center p-4 pt-24 pb-28">
-      <div class="w-full max-w-lg bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-8 md:p-10 border border-gray-100 relative overflow-hidden">
+      <div class="w-full max-w-lg bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 sm:p-8 md:p-10 border border-gray-100 relative overflow-hidden">
         <!-- Top Gradient Bar -->
         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-500 to-indigo-500"></div>
 
@@ -75,6 +75,7 @@ import { AuthService } from '../../services/auth.service';
               name="password"
               required
               minlength="6"
+              autocomplete="new-password"
               class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-gray-50 focus:bg-white"
               placeholder="••••••••"
             />
@@ -84,7 +85,7 @@ import { AuthService } from '../../services/auth.service';
           <!-- Role Selector -->
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Je suis...</label>
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <!-- User -->
               <button type="button" (click)="role = 'USER'"
                 [ngClass]="role === 'USER' ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-500/20' : 'border-gray-200 bg-gray-50 hover:border-gray-300'"

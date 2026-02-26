@@ -130,7 +130,7 @@
                 </a>
                 <button type="submit" [disabled]="lieuForm.invalid || loading"
                     [ngClass]="{'opacity-50 cursor-not-allowed': lieuForm.invalid || loading}"
-                    class="bg-primary hover:bg-primary-dark text-white font-medium py-3 px-8 rounded-lg shadow-md transition-colors duration-200 flex items-center">
+                    class="bg-primary hover:bg-primary-dark text-gray-900 font-bold py-3 px-8 rounded-lg shadow-md transition-colors duration-200 flex items-center">
                     <span *ngIf="!loading">Enregistrer l'établissement</span>
                     <div *ngIf="loading" class="flex items-center">
                         <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">

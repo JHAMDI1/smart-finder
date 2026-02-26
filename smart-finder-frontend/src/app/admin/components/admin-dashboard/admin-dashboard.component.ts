@@ -28,8 +28,8 @@ interface AvisAdmin {
 
         <!-- Header -->
         <div class="mb-8">
-          <h1 class="text-3xl font-extrabold text-gray-900 flex items-center gap-3">
-            <span class="bg-gradient-to-br from-primary-500 to-indigo-600 text-white w-12 h-12 rounded-xl flex items-center justify-center shadow-lg">
+          <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 flex flex-col md:flex-row md:items-center gap-3">
+            <span class="bg-gradient-to-br from-primary-500 to-indigo-600 text-white w-12 h-12 rounded-xl flex items-center justify-center shadow-lg shrink-0">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -37,7 +37,7 @@ interface AvisAdmin {
             </span>
             Dashboard Administrateur
           </h1>
-          <p class="text-gray-500 mt-2 ml-15">Gérez les critères, modérez les avis et supervisez la plateforme</p>
+          <p class="text-gray-500 mt-2 md:ml-15 text-sm md:text-base">Gérez les critères, modérez les avis et supervisez la plateforme</p>
         </div>
 
         <!-- Stats Cards -->
@@ -97,7 +97,7 @@ interface AvisAdmin {
         </div>
 
         <!-- Tabs -->
-        <div class="mb-6 flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+        <div class="mb-6 flex gap-1 bg-gray-100 rounded-xl p-1 overflow-x-auto w-full md:w-fit hide-scrollbar">
           <button 
             *ngFor="let tab of tabs"
             (click)="activeTab = tab.key"
@@ -161,8 +161,8 @@ interface AvisAdmin {
           </div>
 
           <!-- Critères List -->
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <table class="w-full">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
+            <table class="w-full min-w-[500px]">
               <thead class="bg-gray-50 border-b border-gray-100">
                 <tr>
                   <th class="text-left py-3.5 px-6 text-sm font-semibold text-gray-600">Critère</th>
@@ -236,8 +236,8 @@ interface AvisAdmin {
 
         <!-- ==================== TAB: LIEUX ==================== -->
         <div *ngIf="activeTab === 'lieux'" class="space-y-6">
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <table class="w-full">
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
+            <table class="w-full min-w-[500px]">
               <thead class="bg-gray-50 border-b border-gray-100">
                 <tr>
                   <th class="text-left py-3.5 px-6 text-sm font-semibold text-gray-600">Lieu</th>

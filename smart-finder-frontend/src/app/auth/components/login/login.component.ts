@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+      <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 md:p-8">
         <!-- Logo / Header -->
         <div class="text-center mb-8">
           <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -47,6 +47,7 @@ import { Router } from '@angular/router';
                 [(ngModel)]="password"
                 name="password"
                 required
+                autocomplete="current-password"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="••••••••"
               />
@@ -107,7 +108,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;

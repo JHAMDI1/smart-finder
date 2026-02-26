@@ -11,6 +11,7 @@ interface SmartSearchResult {
   description: string;
   adresse: string;
   noteMoyenne: number;
+  imageUrl?: string;
 }
 
 interface SmartSearchResponse {
@@ -169,11 +170,15 @@ interface ChatMessage {
                         [routerLink]="['/lieux', lieu.id]"
                         class="min-w-[280px] w-[280px] bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all cursor-pointer snap-start flex flex-col overflow-hidden group"
                       >
-                        <div class="h-32 bg-gray-200 relative overflow-hidden">
-                          <!-- Image placeholder gradient until real images are added to DB -->
-                          <div class="absolute inset-0 bg-gradient-to-br from-indigo-100 to-emerald-50"></div>
-                          <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
-                          <div class="absolute bottom-2 left-2 right-2 flex justify-between items-end">
+                        <div class="h-32 bg-gray-200 relative overflow-hidden group">
+                          <img *ngIf="lieu.imageUrl; else placeholder" [src]="lieu.imageUrl" [alt]="lieu.nom" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                          <ng-template #placeholder>
+                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-100 to-emerald-50"></div>
+                            <div class="absolute inset-0 bg-black/10 transition-colors"></div>
+                          </ng-template>
+                          
+                          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80 z-10"></div>
+                          <div class="absolute bottom-2 left-2 right-2 flex justify-between items-end z-20">
                             <span *ngIf="lieu.noteMoyenne" class="bg-white/90 backdrop-blur text-sm font-black px-2 py-0.5 rounded-lg flex items-center gap-1 shadow-sm text-gray-800">
                               ⭐ {{ lieu.noteMoyenne | number:'1.1-1' }}
                             </span>

@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { LieuService } from '../../../lieu/services/lieu.service';
 import { CritereService } from '../../../critere/services/critere.service';
 import { Critere } from '../../../critere/models/critere.model';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-lieu-form',
@@ -25,7 +26,8 @@ export class LieuForm implements OnInit {
     private fb: FormBuilder,
     private lieuService: LieuService,
     private critereService: CritereService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.lieuForm = this.fb.group({
       nom: ['', [Validators.required, Validators.maxLength(255)]],
@@ -47,6 +49,7 @@ export class LieuForm implements OnInit {
       next: (data) => {
         this.criteres = data;
         this.addCritereCheckboxes();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Erreur chargement critères', err);

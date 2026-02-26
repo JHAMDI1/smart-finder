@@ -76,9 +76,9 @@ import { AvisList } from '../../../avis/avis/components/avis-list/avis-list';
                 {{ lieu.noteMoyenne | number:'1.1-1' }}
               </div>
             </div>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-md mb-2 tracking-tight">{{ lieu.nom }}</h1>
-            <p class="text-white/80 text-lg md:text-xl flex items-center gap-2 max-w-2xl drop-shadow-sm">
-              <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white drop-shadow-md mb-2 tracking-tight">{{ lieu.nom }}</h1>
+            <p class="text-white/80 text-base md:text-xl flex items-center gap-2 max-w-2xl drop-shadow-sm">
+              <svg class="w-5 h-5 opacity-70 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
