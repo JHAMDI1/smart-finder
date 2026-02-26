@@ -7,21 +7,22 @@ import { Critere } from '../../../critere/models/critere.model';
 import { LieuService } from '../../../lieu/services/lieu.service';
 import { Lieu } from '../../../lieu/models/lieu.model';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 interface AvisAdmin {
-    id: number;
-    note: number;
-    commentaire: string;
-    utilisateurNom?: string;
-    lieuNom?: string;
-    createdAt?: string;
+  id: number;
+  note: number;
+  commentaire: string;
+  utilisateurNom?: string;
+  lieuNom?: string;
+  createdAt?: string;
 }
 
 @Component({
-    selector: 'app-admin-dashboard',
-    standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule],
-    template: `
+  selector: 'app-admin-dashboard',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  template: `
     <div class="min-h-screen bg-gray-50 pt-24 pb-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -271,138 +272,138 @@ interface AvisAdmin {
   `
 })
 export class AdminDashboardComponent implements OnInit {
-    criteres: Critere[] = [];
-    avisList: AvisAdmin[] = [];
-    lieuxList: Lieu[] = [];
+  criteres: Critere[] = [];
+  avisList: AvisAdmin[] = [];
+  lieuxList: Lieu[] = [];
 
-    statsLieux = 0;
-    statsAvis = 0;
-    statsUsers = 0;
+  statsLieux = 0;
+  statsAvis = 0;
+  statsUsers = 0;
 
-    activeTab = 'criteres';
-    tabs = [
-        { key: 'criteres', label: '🏷️ Critères' },
-        { key: 'avis', label: '⭐ Avis' },
-        { key: 'lieux', label: '🏢 Lieux' }
-    ];
+  activeTab = 'criteres';
+  tabs = [
+    { key: 'criteres', label: '🏷️ Critères' },
+    { key: 'avis', label: '⭐ Avis' },
+    { key: 'lieux', label: '🏢 Lieux' }
+  ];
 
-    newCritere: Partial<Critere> = { nom: '', categorie: '', icon: '', actif: true };
-    editingCritere: Critere | null = null;
+  newCritere: Partial<Critere> = { nom: '', categorie: '', icon: '', actif: true };
+  editingCritere: Critere | null = null;
 
-    private avisUrl = 'http://localhost:8080/api/v1/avis';
+  private avisUrl = `${environment.apiUrl}/avis`;
 
-    constructor(
-        private critereService: CritereService,
-        private lieuService: LieuService,
-        private http: HttpClient,
-        private cdr: ChangeDetectorRef
-    ) { }
+  constructor(
+    private critereService: CritereService,
+    private lieuService: LieuService,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) { }
 
-    ngOnInit(): void {
-        this.loadCriteres();
-        this.loadAvis();
-        this.loadLieux();
+  ngOnInit(): void {
+    this.loadCriteres();
+    this.loadAvis();
+    this.loadLieux();
+  }
+
+  // ===== CRITÈRES =====
+  loadCriteres(): void {
+    this.critereService.findAll().subscribe({
+      next: (data) => {
+        this.criteres = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur chargement critères:', err)
+    });
+  }
+
+  saveCritere(): void {
+    if (!this.newCritere.nom || !this.newCritere.categorie) return;
+
+    const critereData = {
+      nom: this.newCritere.nom,
+      categorie: this.newCritere.categorie,
+      icon: this.newCritere.icon || '',
+      description: this.newCritere.description || '',
+      actif: true
+    } as Critere;
+
+    if (this.editingCritere) {
+      this.critereService.update(this.editingCritere.id, critereData).subscribe({
+        next: () => {
+          this.loadCriteres();
+          this.cancelEdit();
+        },
+        error: (err) => console.error('Erreur modification critère:', err)
+      });
+    } else {
+      this.critereService.create(critereData).subscribe({
+        next: () => {
+          this.loadCriteres();
+          this.newCritere = { nom: '', categorie: '', icon: '', actif: true };
+        },
+        error: (err) => console.error('Erreur création critère:', err)
+      });
     }
+  }
 
-    // ===== CRITÈRES =====
-    loadCriteres(): void {
-        this.critereService.findAll().subscribe({
-            next: (data) => {
-                this.criteres = data;
-                this.cdr.detectChanges();
-            },
-            error: (err) => console.error('Erreur chargement critères:', err)
-        });
+  editCritere(critere: Critere): void {
+    this.editingCritere = critere;
+    this.newCritere = { ...critere };
+  }
+
+  cancelEdit(): void {
+    this.editingCritere = null;
+    this.newCritere = { nom: '', categorie: '', icon: '', actif: true };
+  }
+
+  deleteCritere(id: number): void {
+    if (confirm('Supprimer ce critère ?')) {
+      this.critereService.delete(id).subscribe({
+        next: () => this.loadCriteres(),
+        error: (err) => console.error('Erreur suppression critère:', err)
+      });
     }
+  }
 
-    saveCritere(): void {
-        if (!this.newCritere.nom || !this.newCritere.categorie) return;
+  // ===== AVIS =====
+  loadAvis(): void {
+    this.http.get<AvisAdmin[]>(this.avisUrl).subscribe({
+      next: (data) => {
+        this.avisList = data;
+        this.statsAvis = data.length;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur chargement avis:', err)
+    });
+  }
 
-        const critereData = {
-            nom: this.newCritere.nom,
-            categorie: this.newCritere.categorie,
-            icon: this.newCritere.icon || '',
-            description: this.newCritere.description || '',
-            actif: true
-        } as Critere;
-
-        if (this.editingCritere) {
-            this.critereService.update(this.editingCritere.id, critereData).subscribe({
-                next: () => {
-                    this.loadCriteres();
-                    this.cancelEdit();
-                },
-                error: (err) => console.error('Erreur modification critère:', err)
-            });
-        } else {
-            this.critereService.create(critereData).subscribe({
-                next: () => {
-                    this.loadCriteres();
-                    this.newCritere = { nom: '', categorie: '', icon: '', actif: true };
-                },
-                error: (err) => console.error('Erreur création critère:', err)
-            });
-        }
+  deleteAvis(id: number): void {
+    if (confirm('Supprimer cet avis ?')) {
+      this.http.delete(`${this.avisUrl}/${id}`).subscribe({
+        next: () => this.loadAvis(),
+        error: (err) => console.error('Erreur suppression avis:', err)
+      });
     }
+  }
 
-    editCritere(critere: Critere): void {
-        this.editingCritere = critere;
-        this.newCritere = { ...critere };
-    }
+  // ===== LIEUX =====
+  loadLieux(): void {
+    this.lieuService.findAll().subscribe({
+      next: (data) => {
+        this.lieuxList = data;
+        this.statsLieux = data.length;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erreur chargement lieux:', err)
+    });
+  }
 
-    cancelEdit(): void {
-        this.editingCritere = null;
-        this.newCritere = { nom: '', categorie: '', icon: '', actif: true };
+  deleteLieu(id: number): void {
+    if (confirm('Supprimer ce lieu ?')) {
+      this.lieuService.delete(id).subscribe({
+        next: () => this.loadLieux(),
+        error: (err) => console.error('Erreur suppression lieu:', err)
+      });
     }
-
-    deleteCritere(id: number): void {
-        if (confirm('Supprimer ce critère ?')) {
-            this.critereService.delete(id).subscribe({
-                next: () => this.loadCriteres(),
-                error: (err) => console.error('Erreur suppression critère:', err)
-            });
-        }
-    }
-
-    // ===== AVIS =====
-    loadAvis(): void {
-        this.http.get<AvisAdmin[]>(this.avisUrl).subscribe({
-            next: (data) => {
-                this.avisList = data;
-                this.statsAvis = data.length;
-                this.cdr.detectChanges();
-            },
-            error: (err) => console.error('Erreur chargement avis:', err)
-        });
-    }
-
-    deleteAvis(id: number): void {
-        if (confirm('Supprimer cet avis ?')) {
-            this.http.delete(`${this.avisUrl}/${id}`).subscribe({
-                next: () => this.loadAvis(),
-                error: (err) => console.error('Erreur suppression avis:', err)
-            });
-        }
-    }
-
-    // ===== LIEUX =====
-    loadLieux(): void {
-        this.lieuService.findAll().subscribe({
-            next: (data) => {
-                this.lieuxList = data;
-                this.statsLieux = data.length;
-                this.cdr.detectChanges();
-            },
-            error: (err) => console.error('Erreur chargement lieux:', err)
-        });
-    }
-
-    deleteLieu(id: number): void {
-        if (confirm('Supprimer ce lieu ?')) {
-            this.lieuService.delete(id).subscribe({
-                next: () => this.loadLieux(),
-                error: (err) => console.error('Erreur suppression lieu:', err)
-            });
-        }
-    }
+  }
 }

@@ -3,6 +3,7 @@ package com.smartfinder.lieu;
 import com.smartfinder.lieu.dto.LieuDTO;
 import com.smartfinder.lieu.dto.SearchRequestDTO;
 import com.smartfinder.lieu.dto.SearchResponseDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class LieuController {
 
     @PostMapping
     @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN')")
-    public ResponseEntity<LieuDTO> create(@RequestBody LieuCreateRequest request) {
+    public ResponseEntity<LieuDTO> create(@Valid @RequestBody LieuCreateRequest request) {
         Lieu lieu = new Lieu();
         lieu.setNom(request.getNom());
         lieu.setAdresse(request.getAdresse());
@@ -46,7 +47,7 @@ public class LieuController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('OWNER') or hasRole('ADMIN')")
-    public ResponseEntity<LieuDTO> update(@PathVariable("id") Long id, @RequestBody LieuCreateRequest request) {
+    public ResponseEntity<LieuDTO> update(@PathVariable("id") Long id, @Valid @RequestBody LieuCreateRequest request) {
         Lieu lieu = new Lieu();
         lieu.setNom(request.getNom());
         lieu.setAdresse(request.getAdresse());

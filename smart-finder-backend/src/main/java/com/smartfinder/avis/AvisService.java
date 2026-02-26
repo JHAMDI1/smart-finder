@@ -4,6 +4,8 @@ import com.smartfinder.avis.dto.AvisDTO;
 import com.smartfinder.auth.Utilisateur;
 import com.smartfinder.lieu.Lieu;
 import com.smartfinder.lieu.LieuRepository;
+import com.smartfinder.shared.exception.ResourceNotFoundException;
+import com.smartfinder.shared.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +23,10 @@ public class AvisService {
 
     public AvisDTO create(Long lieuId, Avis avis, Utilisateur utilisateur) {
         Lieu lieu = lieuRepository.findById(lieuId)
-                .orElseThrow(() -> new RuntimeException("Lieu non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Lieu", lieuId));
 
         if (avisRepository.findByLieuIdAndUtilisateurId(lieuId, utilisateur.getId()).isPresent()) {
-            throw new RuntimeException("Vous avez déjà donné un avis pour ce lieu");
+            throw new BusinessException("Vous avez déjà donné un avis pour ce lieu");
         }
 
         avis.setLieu(lieu);
@@ -46,10 +48,10 @@ public class AvisService {
 
     public void delete(Long id, Utilisateur utilisateur) {
         Avis avis = avisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Avis non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Avis", id));
 
         if (!avis.getUtilisateur().getId().equals(utilisateur.getId())) {
-            throw new RuntimeException("Vous ne pouvez supprimer que vos propres avis");
+            throw new BusinessException("Vous ne pouvez supprimer que vos propres avis");
         }
 
         Lieu lieu = avis.getLieu();

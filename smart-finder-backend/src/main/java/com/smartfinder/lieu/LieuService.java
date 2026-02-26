@@ -3,6 +3,7 @@ package com.smartfinder.lieu;
 import com.smartfinder.critere.Critere;
 import com.smartfinder.critere.CritereRepository;
 import com.smartfinder.lieu.dto.LieuDTO;
+import com.smartfinder.shared.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +26,13 @@ public class LieuService {
     public LieuDTO create(Lieu lieu, List<Long> critereIds) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Utilisateur currentUtilisateur = utilisateurRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
 
         lieu.setProprietaire(currentUtilisateur);
         if (critereIds != null) {
             for (Long critereId : critereIds) {
                 Critere critere = critereRepository.findById(critereId)
-                        .orElseThrow(() -> new RuntimeException("Critère non trouvé: " + critereId));
+                        .orElseThrow(() -> new ResourceNotFoundException("Critère", critereId));
                 LieuCritere lc = new LieuCritere();
                 lc.setLieu(lieu);
                 lc.setCritere(critere);
@@ -46,7 +47,7 @@ public class LieuService {
     @Transactional(readOnly = true)
     public LieuDTO findById(Long id) {
         Lieu lieu = lieuRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Lieu non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Lieu", id));
         return mapToDTO(lieu);
     }
 

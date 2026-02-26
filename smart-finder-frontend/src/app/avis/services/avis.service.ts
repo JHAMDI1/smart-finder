@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface Avis {
   id: number;
@@ -20,9 +21,9 @@ export interface AvisCreateRequest {
   providedIn: 'root'
 })
 export class AvisService {
-  private apiUrl = 'http://localhost:8080/api/v1';
+  private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   findByLieu(lieuId: number): Observable<Avis[]> {
     return this.http.get<Avis[]>(`${this.apiUrl}/lieux/${lieuId}/avis`);

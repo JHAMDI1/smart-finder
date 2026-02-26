@@ -1,6 +1,8 @@
 package com.smartfinder.auth;
 
 import com.smartfinder.auth.dto.UtilisateurDTO;
+import com.smartfinder.shared.exception.ResourceNotFoundException;
+import com.smartfinder.shared.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class UtilisateurService {
 
     public UtilisateurDTO create(Utilisateur utilisateur) {
         if (utilisateurRepository.existsByEmail(utilisateur.getEmail())) {
-            throw new RuntimeException("Email déjà utilisé");
+            throw new BusinessException("Email déjà utilisé");
         }
         utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
         Utilisateur saved = utilisateurRepository.save(utilisateur);
@@ -30,7 +32,7 @@ public class UtilisateurService {
     @Transactional(readOnly = true)
     public UtilisateurDTO findById(Long id) {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur", id));
         return mapToDTO(utilisateur);
     }
 
@@ -56,10 +58,10 @@ public class UtilisateurService {
     public UtilisateurDTO update(Long id, Utilisateur utilisateurDetails) {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-        
+
         utilisateur.setNom(utilisateurDetails.getNom());
         utilisateur.setPrenom(utilisateurDetails.getPrenom());
-        
+
         Utilisateur updated = utilisateurRepository.save(utilisateur);
         return mapToDTO(updated);
     }
