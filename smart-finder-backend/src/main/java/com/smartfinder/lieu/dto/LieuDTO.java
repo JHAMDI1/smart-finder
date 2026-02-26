@@ -15,6 +15,7 @@ public class LieuDTO {
     private java.math.BigDecimal latitude;
     private java.math.BigDecimal longitude;
     private String horaires;
+    private String imageUrl;
     private java.math.BigDecimal noteMoyenne;
     private List<CritereDTO> criteres;
     private LocalDateTime createdAt;

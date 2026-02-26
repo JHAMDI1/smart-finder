@@ -46,6 +46,9 @@ public class Lieu {
 
     private String horaires;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column(name = "note_moyenne", precision = 3, scale = 2)
     private java.math.BigDecimal noteMoyenne;
 

@@ -1,0 +1,1 @@
+ALTER TABLE lieu ADD COLUMN image_url VARCHAR(500) NULL;

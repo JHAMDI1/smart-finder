@@ -49,11 +49,13 @@ import { AvisList } from '../../../avis/avis/components/avis-list/avis-list';
             </svg>
           </button>
 
-          <!-- Dynamic BG Gradient -->
-          <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 via-primary-900 to-primary-800"></div>
+          <!-- Dynamic BG Gradient or Image -->
+          <div *ngIf="lieu.imageUrl" class="absolute inset-0 bg-cover bg-center" [style.backgroundImage]="'url(' + lieu.imageUrl + ')'"></div>
+          <div *ngIf="!lieu.imageUrl" class="absolute inset-0 bg-gradient-to-br from-indigo-900 via-primary-900 to-primary-800"></div>
           
-          <!-- Decorative Patterns -->
-          <svg class="absolute inset-0 w-full h-full text-white/5 mix-blend-overlay" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <!-- Decorative Patterns OVERLAY (always dark overlay to read text) -->
+          <div class="absolute inset-0 bg-gray-900/60" *ngIf="lieu.imageUrl"></div>
+          <svg *ngIf="!lieu.imageUrl" class="absolute inset-0 w-full h-full text-white/5 mix-blend-overlay" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
             <pattern id="grid-detail" width="10" height="10" patternUnits="userSpaceOnUse">
               <circle cx="2" cy="2" r="1" />
             </pattern>

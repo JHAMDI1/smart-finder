@@ -16,6 +16,8 @@ import { Critere } from '../../../critere/models/critere.model';
 export class LieuForm implements OnInit {
   lieuForm: FormGroup;
   criteres: Critere[] = [];
+  selectedImage: File | null = null;
+  imagePreview: string | null = null;
   loading = false;
   error = '';
 
@@ -63,6 +65,24 @@ export class LieuForm implements OnInit {
     return this.lieuForm.controls['critereIds'] as FormArray;
   }
 
+  onImageSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.error = 'Veuillez sélectionner un fichier image valide.';
+        return;
+      }
+      this.selectedImage = file;
+
+      // Preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit(): void {
     if (this.lieuForm.invalid) {
       return;
@@ -76,9 +96,28 @@ export class LieuForm implements OnInit {
       .map((checked: boolean, i: number) => checked ? this.criteres[i].id : null)
       .filter((v: number | null) => v !== null);
 
+    // If an image is selected, upload it first
+    if (this.selectedImage) {
+      this.lieuService.uploadImage(this.selectedImage).subscribe({
+        next: (response) => {
+          this.submitLieuData(selectedCritereIds, response.url);
+        },
+        error: (err) => {
+          this.loading = false;
+          this.error = "Erreur lors de l'envoi de l'image.";
+          console.error(err);
+        }
+      });
+    } else {
+      this.submitLieuData(selectedCritereIds, undefined);
+    }
+  }
+
+  private submitLieuData(selectedCritereIds: number[], imageUrl?: string): void {
     const requestData = {
       ...this.lieuForm.value,
-      critereIds: selectedCritereIds
+      critereIds: selectedCritereIds,
+      ...(imageUrl && { imageUrl })
     };
 
     this.lieuService.create(requestData).subscribe({

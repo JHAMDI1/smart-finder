@@ -68,6 +68,7 @@ public class LieuService {
         lieu.setLatitude(lieuDetails.getLatitude());
         lieu.setLongitude(lieuDetails.getLongitude());
         lieu.setHoraires(lieuDetails.getHoraires());
+        lieu.setImageUrl(lieuDetails.getImageUrl());
 
         if (critereIds != null) {
             lieu.getLieuCriteres().clear();
@@ -98,6 +99,7 @@ public class LieuService {
         dto.setLatitude(lieu.getLatitude());
         dto.setLongitude(lieu.getLongitude());
         dto.setHoraires(lieu.getHoraires());
+        dto.setImageUrl(lieu.getImageUrl());
         dto.setNoteMoyenne(lieu.getNoteMoyenne());
         dto.setCreatedAt(lieu.getCreatedAt());
 

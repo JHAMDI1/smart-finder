@@ -11,6 +11,7 @@ export interface Lieu {
   noteMoyenne: number;
   criteres?: Critere[];
   images?: string[];
+  imageUrl?: string;
   createdAt?: string;
 }
 

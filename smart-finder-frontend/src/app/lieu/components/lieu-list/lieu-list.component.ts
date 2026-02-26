@@ -184,16 +184,18 @@ interface CategorieGroup {
           >
             <!-- Image Area -->
             <div class="h-48 relative overflow-hidden bg-gray-100">
-              <div class="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-indigo-500/20 group-hover:scale-105 transition-transform duration-500"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-indigo-500/20 group-hover:scale-105 transition-transform duration-500">
+                <img *ngIf="lieu.imageUrl" [src]="lieu.imageUrl" [alt]="lieu.nom" class="w-full h-full object-cover">
+              </div>
               
-              <svg class="absolute inset-0 w-full h-full text-gray-200" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <svg *ngIf="!lieu.imageUrl" class="absolute inset-0 w-full h-full text-gray-200" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none">
                  <pattern id="grid-pattern-{{lieu.id}}" width="20" height="20" patternUnits="userSpaceOnUse">
                    <circle cx="2" cy="2" r="1.5" />
                  </pattern>
                  <rect width="100%" height="100%" [attr.fill]="'url(#grid-pattern-' + lieu.id + ')'" />
               </svg>
 
-              <div class="absolute inset-0 flex items-center justify-center">
+              <div *ngIf="!lieu.imageUrl" class="absolute inset-0 flex items-center justify-center">
                  <div class="w-16 h-16 bg-white/80 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
                    <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>

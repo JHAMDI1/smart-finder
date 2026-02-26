@@ -35,4 +35,10 @@ export class LieuService {
   search(request: SearchRequest): Observable<SearchResponse> {
     return this.http.post<SearchResponse>(`${this.apiUrl}/search`, request);
   }
+
+  uploadImage(file: File): Observable<{ url: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{ url: string }>(`${environment.apiUrl}/upload/image`, formData);
+  }
 }

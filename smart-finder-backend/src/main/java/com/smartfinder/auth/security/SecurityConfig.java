@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/lieux/*/avis").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/lieux/*/avis/*").authenticated()
                         // Authenticated endpoints
+                        .requestMatchers(HttpMethod.POST, "/upload/image").authenticated()
                         .requestMatchers(HttpMethod.POST, "/avis/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/lieux").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/lieux/**").authenticated()

@@ -40,6 +40,7 @@ public class LieuController {
         lieu.setLatitude(request.getLatitude());
         lieu.setLongitude(request.getLongitude());
         lieu.setHoraires(request.getHoraires());
+        lieu.setImageUrl(request.getImageUrl());
 
         LieuDTO created = lieuService.create(lieu, request.getCritereIds());
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -55,6 +56,7 @@ public class LieuController {
         lieu.setLatitude(request.getLatitude());
         lieu.setLongitude(request.getLongitude());
         lieu.setHoraires(request.getHoraires());
+        lieu.setImageUrl(request.getImageUrl());
 
         LieuDTO updated = lieuService.update(id, lieu, request.getCritereIds());
         return ResponseEntity.ok(updated);

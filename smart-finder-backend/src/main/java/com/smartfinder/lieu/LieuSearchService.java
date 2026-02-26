@@ -24,8 +24,7 @@ public class LieuSearchService {
         Specification<Lieu> spec = LieuSpecifications.buildSearchSpecification(
                 request.getCritereIds(),
                 request.getMinNote(),
-                request.getSearch()
-        );
+                request.getSearch());
 
         int page = request.getPage() != null ? request.getPage() : 0;
         int size = request.getSize() != null ? request.getSize() : 20;
@@ -54,6 +53,7 @@ public class LieuSearchService {
         dto.setLatitude(lieu.getLatitude());
         dto.setLongitude(lieu.getLongitude());
         dto.setHoraires(lieu.getHoraires());
+        dto.setImageUrl(lieu.getImageUrl());
         dto.setNoteMoyenne(lieu.getNoteMoyenne());
         dto.setCreatedAt(lieu.getCreatedAt());
 
